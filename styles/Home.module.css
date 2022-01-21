@@ -1,0 +1,194 @@
+.container {
+  padding: 0 2rem;
+}
+
+.main {
+  min-height: 100vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer {
+  display: flex;
+  flex: 1;
+  padding: 2rem 0;
+  border-top: 1px solid #eaeaea;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.title a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.title a:hover,
+.title a:focus,
+.title a:active {
+  text-decoration: underline;
+}
+
+.title {
+  margin: 0;
+  line-height: 1.15;
+  font-size: 4rem;
+}
+
+.title,
+.description {
+  text-align: center;
+}
+
+.description {
+  margin: 4rem 0;
+  line-height: 1.5;
+  font-size: 1.5rem;
+}
+
+.code {
+  background: #fafafa;
+  border-radius: 5px;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace;
+}
+
+.grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 800px;
+}
+
+.card {
+  margin: 1rem;
+  padding: 1.5rem;
+  text-align: left;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  max-width: 300px;
+}
+
+.card:hover,
+.card:focus,
+.card:active {
+  color: #0070f3;
+  border-color: #0070f3;
+}
+
+.card h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+}
+
+.card p {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+
+
+
+.logo {
+  padding: 0%;
+}
+
+.header_wrapper{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  grid-gap: 20pc;
+  align-items: center;
+  margin-top: 0.4rem;
+  width:100%
+}
+
+.navbar{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 5pc;
+  align-items: center;
+  color: white;
+}
+
+.signup_btn{
+  background-color: orangered;
+  width: 100px;
+  height: 30px;
+  color: white;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  background: #D43464;
+  border-radius: 7px;
+}
+
+.peerl_ilstrn{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+@font-face {
+  font-family: cartoon-fun;
+  src: url('../public/Fonts/CartoonFun-rg0zO.ttf');
+}
+
+.tagline_wrapper{
+  color: white;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.primary_txt{
+  font-family: cartoon-fun; 
+  font-size: 35px;
+  margin: 0%;
+}
+
+
+.secondary_txt{
+  margin: 0%;
+}
+
+.cta_btn{
+  background: #FF954C;
+  border-radius: 10px;
+  width: 175px;
+  height: 40px;
+  outline: none;
+  color: white;
+  font-weight: bold;
+  margin-top: 2rem;
+  border-style: outset;
+}
+
+
+
+
+@media (max-width: 600px) {
+  .grid {
+    width: 100%;
+    flex-direction: column;
+  }
+}
