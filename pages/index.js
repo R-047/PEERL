@@ -4,9 +4,18 @@ import styles from '../styles/Home.module.css'
 import Head from 'next/head'
 import Image from 'next/image'
 
+import Link from 'next/link'
+import Login from '../components/Login';
+import { useRouter } from 'next/router';
+import Modal from 'react-modal'
+
+
+
+Modal.setAppElement('#__next')
 
 
 function index() {
+	const router = useRouter()
 	return (
 		<div className={styles.main_div}>
 			<Head>
@@ -21,27 +30,70 @@ function index() {
 				<nav className={styles.navbar}>
 					<a>about</a>
 					<a>platform</a>
-					<a>login</a>
+					<Link href={`/?login=${true}`} as={`/login`}>
+						<a>login</a>
+					</Link>
 				</nav>
-				<a className={styles.signup_btn}>sign up</a>
-			</div>
+				<Link href={`/?signup=${true}`} as={`/signup`}>
+					<a className={styles.signup_btn}>sign up</a>
+				</Link>
 
+			</div>
+			<div className={styles.plane_2}>
+				<Image src="/Hero/planeR2L.svg" alt="Circle 1" width={50} height={50}></Image>
+			</div>
+			<div className={styles.plane_1}>
+				<Image src="/Hero/planeL2R.svg" alt="Circle 1" width={75} height={75}></Image>
+			</div>
+			{/* <div className={styles.chute_res}>
+				<Image src="/Hero/chute.svg" alt="Circle 1" width={50} height={50}></Image>
+			</div> */}
 			<div className={styles.peerl_ilstrn}>
 				<Image src="/Hero/CentralGraphics.svg" alt="PEERL Logo" width={500} height={300} />
 			</div>
 
 			<div className={styles.tagline_wrapper}>
 				<p className={styles.primary_txt}>
-				A Place you was looking for...
+					A Place you was looking for...
 				</p>
 				<p className={styles.secondary_txt}>
-				you found the place where you can get anything to start your<br></br>journey of learning
+					you found the place where you can get anything to start your<br></br>journey of learning
 				</p>
 				<button className={styles.cta_btn}>view trending rooms</button>
 			</div>
-			<div class="circle_1">
-				
+			<div className={styles.circle_1}>
+				<Image src="/Hero/patternCircle1.svg" alt="Circle 1" width={1000} height={1000}></Image>
 			</div>
+			<div className={styles.circle_2}>
+				<Image src="/Hero/patternCircle1.svg" alt="Circle 1" width={1000} height={1000}></Image>
+			</div>
+			<div className={styles.circle_3}>
+				<Image src="/Hero/patternCircle3.svg" alt="Circle 1" width={100} height={100}></Image>
+			</div>
+
+
+			<Modal
+				className={styles.login_modal}
+				overlayClassName={styles.overlay}
+				isOpen={!!router.query.login}
+				onRequestClose={() => router.push('/')}
+				contentLabel="Post modal"
+			>
+
+				<Login custom_styles = {{label_input_wrapper: styles.label_input_wrapper, login_form: styles.login_form, login_btn: styles.login_btn, label: styles.form_label, input: styles.form_input}}/>
+			</Modal>
+
+			<Modal
+
+				isOpen={!!router.query.signup}
+				onRequestClose={() => router.push('/')}
+				contentLabel="Post modal"
+			>
+
+				<Login />
+			</Modal>
+
+
 
 		</div>
 	)
