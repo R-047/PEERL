@@ -8,6 +8,8 @@ import Link from 'next/link'
 import Login from '../components/Login';
 import { useRouter } from 'next/router';
 import Modal from 'react-modal'
+import {signIn, signOut, useSession} from 'next-auth/react'
+
 
 
 
@@ -16,6 +18,9 @@ Modal.setAppElement('#__next')
 
 function index() {
 	const router = useRouter()
+	const { data: session, status } = useSession()
+	console.log({session, status})
+	session && router.replace("/dashboard") 
 	return (
 		<div className={styles.main_div}>
 			<Head>
@@ -30,21 +35,25 @@ function index() {
 				<nav className={styles.navbar}>
 					<a>about</a>
 					<a>platform</a>
-					<Link href={`/?login=${true}`} as={`/login`}>
+					{/* <Link href={`/?login=${true}`} as={`/login`}>
+						<a>login</a>
+					</Link> */}
+					<Link href='/api/auth/signin'>
 						<a>login</a>
 					</Link>
+
 				</nav>
 				<Link href={`/?signup=${true}`} as={`/signup`}>
 					<a className={styles.signup_btn}>sign up</a>
 				</Link>
 
 			</div>
-			<div className={styles.plane_2}>
+			{/* <div className={styles.plane_2}>
 				<Image src="/Hero/planeR2L.svg" alt="Circle 1" width={50} height={50}></Image>
 			</div>
 			<div className={styles.plane_1}>
 				<Image src="/Hero/planeL2R.svg" alt="Circle 1" width={75} height={75}></Image>
-			</div>
+			</div> */}
 			{/* <div className={styles.chute_res}>
 				<Image src="/Hero/chute.svg" alt="Circle 1" width={50} height={50}></Image>
 			</div> */}
@@ -72,7 +81,7 @@ function index() {
 			</div>
 
 
-			<Modal
+			{/* <Modal
 				className={styles.login_modal}
 				overlayClassName={styles.overlay}
 				isOpen={!!router.query.login}
@@ -81,9 +90,9 @@ function index() {
 			>
 
 				<Login custom_styles = {{label_input_wrapper: styles.label_input_wrapper, login_form: styles.login_form, login_btn: styles.login_btn, label: styles.form_label, input: styles.form_input}}/>
-			</Modal>
+			</Modal> */}
 
-			<Modal
+			{/* <Modal
 
 				isOpen={!!router.query.signup}
 				onRequestClose={() => router.push('/')}
@@ -91,7 +100,7 @@ function index() {
 			>
 
 				<Login />
-			</Modal>
+			</Modal> */}
 
 
 

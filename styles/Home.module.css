@@ -109,6 +109,18 @@
 /* my CSS */
 .main_div:root{
   overflow-x: hidden;
+  
+}
+
+.main_div{
+  background-color: #0F031C;
+  width: 100vw;
+  height:100vh;
+  margin: 0%;
+  padding: 0%;
+  position:absolute;
+  top: 0%;
+  
 }
 
 .logo {

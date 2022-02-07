@@ -1,0 +1,257 @@
+.main_div{
+	width: 100vw;
+    background: #9b9b3a;
+    position: fixed;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow: auto;
+}
+
+.nav_bar{
+	display: flex;
+    width: -webkit-fill-available;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-bottom: grey;
+    border-width: 0px 0px 1px 0px;
+    border-style: solid;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    
+}
+
+.body_wrapper{
+	width: 100%;
+	display: flex;
+	align-items: center;
+	height: 100%;
+
+}
+
+
+.logo_wrapper{
+    width: 100px;
+    height: 50px;
+    position: relative;
+}
+
+.sign_out_btn{
+	background: #EC5953;
+	border: 3px solid #000000;
+	box-sizing: border-box;
+	border-radius: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+    margin-left: 10px;
+}
+
+
+
+
+.content_wrapper{
+	width: 100%;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+.header_line{
+	
+}
+
+
+
+.context_heading{
+	padding: 0%;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.pics_container{
+	display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    justify-content: flex-start;
+    grid-gap: 5px;
+}
+
+
+.label_input_wrapper{
+	display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    align-items: flex-start;
+    margin-top: 10px;
+    
+}
+
+.avtr_wrapper{
+	display: flex;
+    justify-content:flex-start;
+    align-items: center;
+    max-width: 100%;
+    padding: 5px;
+    gap: 5px;
+    overflow-x: auto;
+
+}
+
+.avtr_wrapper::-webkit-scrollbar{
+    width: 2px;
+    height: 10px;
+}
+.avtr_wrapper::-webkit-scrollbar-track{
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.25);
+}
+.avtr_wrapper::-webkit-scrollbar-thumb{
+    border-radius: 5px;
+    background-color: #009578;
+}
+
+.avtr_box{
+	background: #FFFFFF;
+    border: 3px solid #000000;
+    box-sizing: border-box;
+    border-radius: 5px;
+    min-width: 50px;
+    height: 50px;
+    overflow: hidden;
+    padding: 0%;
+    position: relative;
+    z-index: 0;
+}
+
+.dp_box{
+    background: #FFFFFF;
+    border: 3px solid #000000;
+    box-sizing: border-box;
+    border-radius: 10px;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    padding: 0%;
+    position: relative;
+}
+
+.form_styles{
+    margin-top: 20px;
+
+}
+
+.user_name_input{
+	background: #FFFFFF;
+	border: 3px solid #000000;
+	box-sizing: border-box;
+	border-radius: 10px;
+	width: 100%;
+	height: 40px;
+}
+
+.save_btn{
+background: #F4D700;
+    border: 3px solid #000000;
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 10px;
+    
+}
+
+.pic{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+.input_image_wrapper{
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+
+.file_upload_btn input[type="file"]{
+ display: none;
+}
+  .file_upload_btn  {
+    color: black;
+    display: inline-block;
+    background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+    border: 1px solid #999;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-shadow: 1px 1px #fff;
+    font-weight: 700;
+    font-size: 10pt;
+    width: 100%;
+    text-align: center;
+    
+  }
+
+
+
+
+
+
+@media (min-width: 500px) { 
+    .pics_container{
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        width: 100%;
+        justify-content: flex-start;
+        grid-gap: 5px;
+    }
+
+    .body_wrapper{
+        width: 50%;
+    padding-left: 50px;
+
+}
+
+.avtr_wrapper{
+	display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    max-width: 100%;
+    padding: 5px;
+    gap: 5px;
+   
+
+}
+
+ 
+
+.nav_bar{
+    display: flex;
+    width: -webkit-fill-available;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: grey;
+    border-width: 0px 0px 1px 0px;
+    border-style: solid;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 100px;
+}
+}
+
+
