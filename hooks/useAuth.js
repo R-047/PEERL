@@ -8,10 +8,12 @@ function useAuth(comp) {
 	useEffect(() => {
 	  const securePage = async () => {
 	    const session = await getSession()
+	    console.log("logging from hook",session)
 	    if(!session){
 	      signIn()
 	    } else if(!session.user.name) {
 		router.push("/userprofile")
+		setloading(false)
 	    }else{
 	      setloading(false)
 	    }

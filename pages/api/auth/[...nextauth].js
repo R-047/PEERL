@@ -6,10 +6,13 @@ import GoogleProvider from 'next-auth/providers/google'
 import TwitterProvider from "next-auth/providers/twitter";
 import GitHubProvider from "next-auth/providers/github";
 
+
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
 export default NextAuth({
   adapter: MongoDBAdapter(clientPromise),
+  
+
   providers: [
 	EmailProvider({
 	  server: process.env.EMAIL_SERVER,
@@ -35,9 +38,10 @@ export default NextAuth({
 	async session({ session, token, user }) {
 	  // Send properties to the client, like an access_token from a provider.
 	//   session.accessToken = token.accessToken
-	  console.log("logging from nextauth ........................................")
-	  console.log(session)
-	  console.log(user)
+		// console.log("logging from sessions.............................")
+		// console.log(user)
+		// console.log(session)
+		session.id=user.id
 	  return session
 	}
       }

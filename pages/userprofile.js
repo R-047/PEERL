@@ -4,27 +4,36 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/userprofile.module.css'
 import {listObj} from '../lib/s3client'
+import axios from 'axios';
+import clientPromise, {ObjectId} from '../lib/mongodb'
+import { getSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
-function userprofile({avtrs, host}) {
+function userprofile({avtrs, host, user_image, user_name}) {
 
-  const dp_ref = useRef()
+  const router = useRouter()
+  const form_init_state = {
+    dp_name: user_image ? user_image : "/empty_face.svg",
+    user_name:user_name ? user_name : "",
+    dp_blob: undefined,
+    err: undefined
+  }
 
-  const [file, setfile] = useState("/empty_face.svg");
+  const [form_state, setform_state] = useState(form_init_state)
 
-  // useEffect(() => {
-  //   var formData = new FormData(document.getElementById("user_form"));
-  //   var content = '<a id="a"><b id="b">hey!</b></a>'; // the body of the new file...
-  //   var blob = new Blob([content], { type: "text/xml"});
-  //   formData.append("avatar", blob);
-  // }, []);
+  
   
 
   const capture_file = (e) => {
     const in_file = e.target.files[0]
     if(in_file){
+      
       const reader = new FileReader();
       reader.addEventListener("load", function() {
-        setfile(this.result)
+        // setfile(this.result)
+        setform_state((prev_value) => {
+          return {...prev_value, dp_blob: in_file, dp_name:this.result}
+        })
       })
       reader.readAsDataURL(in_file)
     } 
@@ -33,18 +42,62 @@ function userprofile({avtrs, host}) {
 
   const setImage = (e) => {
     console.log(".....................", e.target.src)
-    setfile(e.target.src)
+    setform_state((prev_value) => {
+      return {
+        ...prev_value,
+        dp_name: e.target.src,
+        dp_blob: undefined
+      }
+    })
+    
   }
+
+  const onNameChange = (e) => {
+    setform_state((prev_value) => {
+      return {
+        ...prev_value,
+        user_name: e.target.value
+      }
+    })
+  }
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+  
+    formData.append('username', form_state.user_name);
+    if(form_state.dp_blob){
+      formData.append('avatar', form_state.dp_blob);
+    }else{
+      formData.append('avatar_name', form_state.dp_name);
+    }
+    const response = await axios.post(`${host}/api/updateUserProfile`, formData)
+    response.data.data == 'success' ? router.push("/home/peergroups") : setform_state((prev_State) => {
+      return {
+        ...prev_State,
+        err: "err"
+      }
+    })
+  
+    
+  }
+
+
+
  
     const avtr_boxes = avtrs.map((image_names, index )=> {
-      const img_src = host+`api/getBlob/a/`+image_names.key
+      const img_src = `${host}api/getBlob/a/${image_names.key}`
       return(
         <div key={index} className={styles.avtr_box} onClick={setImage}>
-                  <Image src={img_src} className={styles.pic} layout="fill"></Image>
+                  <Image src={img_src} className={styles.pic} layout="fill" quality="1"></Image>
         </div>
       )
     })
   
+
+
+
 
   const ele = (
     <div className={styles.main_div}>
@@ -64,73 +117,57 @@ function userprofile({avtrs, host}) {
         <div className={styles.content_wrapper}>
           <h1 className={styles.context_heading}>Let's personalize your account</h1>
 
-          <form className={styles.form_style} encType="multipart/form-data" action='/api/updateUserProfile' method='POST' id='user_form'>
+          <form className={styles.form_style}>
             <div className={styles.pics_container}>
               <div className={styles.input_image_wrapper}>
-                <div className={styles.dp_box} ref={dp_ref}>
+                <div className={styles.dp_box}>
 
 
-                  <Image src={file} className={styles.pic} layout="fill" quality="100"></Image>
+                  <Image src={form_state.dp_name} className={styles.pic} layout="fill" quality="1"></Image>
                   
                 </div>
                 <div className={styles.file_upload_btn}>
                   <label htmlFor='avatar'>upload image</label>
                   <input type="file" onChange={capture_file}
                     id="avatar" name="avatar"
-                    accept="image/png, image/jpeg">
+                    accept="image/png, image/jpeg"
+
+                    >
                     </input>
                 </div>
                   {/* <button type='file'>upload file</button> */}
               </div>
               <div className={styles.avtr_wrapper}>
                 {avtr_boxes}
-                {/* <div  className={styles.avtr_box} >
-                  
-                </div>
-                <div  className={styles.avtr_box} >
-                  
-                </div>
-                <div  className={styles.avtr_box} >
-                  
-                </div>
-                <div  className={styles.avtr_box} >
-                  
-                </div>
-                <div  className={styles.avtr_box} >
-                  
-                </div>
-                <div  className={styles.avtr_box} >
-                  
-                </div>
-                <div  className={styles.avtr_box} >
-                  
-                </div>
-                <div  className={styles.avtr_box} >
-                  
-                </div> */}
               </div>
             </div>
             <div className={styles.label_input_wrapper}>
               <label htmlFor="user_name">user name</label>
-              <input className={styles.user_name_input} type='text' name="user_name" id='user_name' />
+              <input className={styles.user_name_input} type='text' name="user_name" id='user_name' onChange={onNameChange} value={form_state.user_name}/>
 
             </div>
             <br></br>
-            <button className={styles.save_btn} type='submit'>save</button>
-            <button className={styles.sign_out_btn}>sign out</button>
+            <button className={styles.save_btn} type='submit' onClick={onSubmit}>save</button>
+            <button className={styles.sign_out_btn} onClick={(e) => signOut({ callbackUrl: 'http://localhost:3000/' })}>sign out</button>
+            {form_state.err && <p>some error occured</p>}
           </form>
         </div>
       </div>
-
-
     </div>
   )
-  return ele;
+
+
+
+  return useAuth(ele);
 }
 
 export default userprofile;
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+
+  const {req} = context
+  const session = await getSession({req})
+  const id = session.id
   const result = await listObj(process.env.AWS_S3_AVATAR_BUCKET_NAME)
   let avtr_names_arr = []
   if(result)
@@ -139,10 +176,30 @@ export async function getServerSideProps() {
 			key: ele.Key
 		}
 	})}
+
+  
+
+    const client = await clientPromise
+    const cursor = await client.db().collection("users").find({
+      _id: {
+        $eq: new ObjectId(id)
+      }
+    })
+    const user_obj_arr = await cursor.toArray();
+    const user_name_from_db = user_obj_arr[0].name ? user_obj_arr[0].name : null
+    const user_image_from_db = user_obj_arr[0].image ? user_obj_arr[0].image : null
+    console.log(user_name_from_db, user_image_from_db)
+
+
   return {
     props: {
+      user_name: user_name_from_db,
+      user_image: user_image_from_db,
       avtrs: avtr_names_arr,
       host: process.env.HOST_URL
     }
   }
+
+  
+
 }

@@ -20,7 +20,7 @@ function index() {
 	const router = useRouter()
 	const { data: session, status } = useSession()
 	console.log({session, status})
-	session && router.replace("/dashboard") 
+	session && router.replace("/home/peergroups") 
 	return (
 		<div className={styles.main_div}>
 			<Head>

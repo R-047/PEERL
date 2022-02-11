@@ -1,32 +1,30 @@
 import { upload, apiRoute } from '../../lib/multerStorageBucket';
 import {put} from '../../lib/s3client'
-import clientPromise from '../../lib/mongodb'
+import clientPromise, {ObjectId} from '../../lib/mongodb'
+import {getSession} from 'next-auth/react'
 
 apiRoute.use(upload.single('avatar'));
 
 apiRoute.post(async (req, res) => {
-	console.log("file......", req.file)
-	const user_name = req.body.user_name
-	let file_name = undefined
-	// if(req.file){
-	// 	const result = await put(process.env.AWS_S3_DP_BUCKET_NAME, req.file.filename, req.file)
-	// 	console.log(result)
-	// 	file_name = result.key
-	// }
+	const session = await getSession({ req })
+	const id = session.id
+	const user_name = req.body.username
+	let avtr_name = req.body.avatar_name == '/empty_face.svg' ? undefined : req.body.avatar_name
 	
-	console.log(user_name, file_name)
-	
-	const client = await clientPromise
-	const users = await client.db()
-	.collection("users")
-	.find({})
-	.toArray();
-	console.log(users)
-	// client.then(mc => {
-	// 	console.log("mcccccc",mc)
-	//       })
 
-	res.status(200).json({ data: 'success' });
+
+	if(req.file){
+		const result = await put(process.env.AWS_S3_DP_BUCKET_NAME, req.file.filename, req.file)
+		console.log(result)
+		avtr_name = `${process.env.HOST_URL}api/getBlob/d/${result.key}`
+	}
+
+	await updateUserProfile(id, user_name, avtr_name)
+
+	// res.redirect(308, '/')
+	// res.end()
+
+	res.json({ data: 'success' });
 });
 
 export default apiRoute;
@@ -37,3 +35,16 @@ export const config = {
 	},
 };
 
+
+const updateUserProfile = async (id, username, avtr_name) => {
+	const client = await clientPromise
+	const result = await client.db().collection("users").updateOne({
+		_id: new ObjectId(id)
+	},{
+		$set: {
+			name: username,
+			image: avtr_name
+		}
+	})
+	console.log(result)
+}
