@@ -1,0 +1,516 @@
+.main_div{
+	width: 100vw;
+	background: #F0F0E5;
+	position: fixed;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	/* overflow: auto; */
+    }
+    
+    
+    .menu_btn{
+	background-image: url("../public//HomePageContents/menu_ic.svg");
+	background-repeat: no-repeat;
+	background-color: transparent;
+	background-size: contain;
+	border-style: none;
+	outline: none;
+	width: 25px;
+	height: 25px;
+    
+    }
+    
+    .logo_wrapper{
+	    width: 100px;
+	    height: 50px;
+	    position: relative;
+	}
+    
+    .header_panel{
+	display: flex;
+	width: 100%;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid rgb(58, 56, 56)
+    }
+    
+    .context_header{
+     display: none;
+    }
+    
+    
+    
+    .btns_container{
+	display: flex;
+    }
+    .search_button{
+	background-image: url("../public/HomePageContents/searchsearch_ic.svg");
+	background-repeat: no-repeat;
+	background-color: transparent;
+	background-size: contain;
+	border-style: none;
+	outline: none;
+	width: 25px;
+	height: 25px;
+	margin-right: 10px;
+    }
+    
+    .notification_button{
+	background-image: url("../public/HomePageContents/notifiation_ic.svg");
+	background-repeat: no-repeat;
+	background-color: transparent;
+	background-size: contain;
+	border-style: none;
+	outline: none;
+	width: 30px;
+	height: 30px;
+	display: none;
+    }
+    
+    .settings_btn{
+	background-image: url("../public/HomePageContents/settings_ic.svg");
+	background-repeat: no-repeat;
+	background-color: transparent;
+	background-size: contain;
+	border-style: none;
+	outline: none;
+	width: 30px;
+	height: 30px;
+	display: none;
+    }
+    
+    .user_capsule{
+     display: flex;
+     margin-left: 10px;
+    
+    }
+    
+    .avtr_image{
+     position: relative;
+     width: 30px;
+     height: 30px;
+    }
+    
+    .avtr_content{
+     display: none;
+    }
+    
+    .user_name{
+    
+    }
+    
+    .user_rank{
+    
+    }
+    
+    
+    
+    .navdrawer{
+	background-color: blue;
+	height: 100%;
+	position: absolute;
+	width: 50%;
+	top: 0px;
+	left: -300px;
+	bottom: 0px;
+	z-index: 3;
+	display: none;
+    }
+    
+    
+    .navdrawerDone{
+	display: block;
+	left: 0px;
+    }
+    
+    .navdrawerEnter{
+	display: block;
+	left: -300px;
+    }
+    
+    .navdrawerEnterActive{
+	display: block;
+	left: 0px; 
+	transition: left 500ms;
+    }
+    
+    .navdrawerExit{
+	display: block;
+       left: 0px;
+    }
+    
+    .navdrawerExitActive{
+	display: block;
+	left: -300px; 
+	transition: left 500ms;
+    }
+    
+    .navdrawerExitDone{
+	display: none;
+    }
+    
+    
+    .body_flex_wrapper{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	height: 100%;
+    
+    }
+    
+    
+    
+    .link_group{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+    
+    }
+    
+    .link_icon_peergroups{
+	background-image: url("../public/HomePageContents/peergroup_ic.svg");
+	background-repeat: no-repeat;
+	background-color: transparent;
+	background-size: contain;
+	border-style: none;
+	outline: none;
+	width: 25px;
+	height: 25px;
+    
+    }
+    .link_icon_rooms{
+    
+	background-image: url("../public/HomePageContents/rooms_ic.svg");
+	background-repeat: no-repeat;
+	background-color: transparent;
+	background-size: contain;
+	border-style: none;
+	outline: none;
+	width: 25px;
+	height: 25px;
+    
+    }
+    .link_icon_subscriptions{
+	background-image: url("../public/HomePageContents/subs_ic.svg");
+	background-repeat: no-repeat;
+	background-color: transparent;
+	background-size: contain;
+	border-style: none;
+	outline: none;
+	width: 25px;
+	height: 25px;
+    
+    }
+    .link_icon_notebooks{
+	background-image: url("../public/HomePageContents/notebook_ic.svg");
+	background-repeat: no-repeat;
+	background-color: transparent;
+	background-size: contain;
+	border-style: none;
+	outline: none;
+	width: 25px;
+	height: 25px;
+    
+    }
+    .link_icon_trendingrooms{
+	background-image: url("../public/HomePageContents/trending_ic.svg");
+	background-repeat: no-repeat;
+	background-color: transparent;
+	background-size: contain;
+	border-style: none;
+	outline: none;
+	width: 25px;
+	height: 25px;
+    
+    }
+    
+    .link_text{
+	font-size: 0.6em;
+    }
+    
+    
+    
+    
+    .nav_panel{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	padding: 10px 10px 10px 10px;
+	flex-direction: row;
+	border-bottom: 1px solid;
+	order: 2;
+	background-color: aliceblue;
+	position: absolute;
+	bottom: 0px;
+    
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    /* peergroups component and rooms component styles ###########################################*/
+    .rooms_container{
+	background-color: rgb(218, 208, 80);
+	width: inherit;
+	/* overflow-y: auto; */
+	display: flex; 
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	padding-bottom: 150px;  
+    }
+    
+    .activities_container{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	max-width: 100%;
+	padding: 5px;
+	min-height: 130px;
+	grid-gap: 5px;
+	gap: 5px;
+	margin-bottom: 100p;
+	overflow-x: auto;
+	background-color: aquamarine;
+	
+    
+    }
+    
+    .rooms_activities_wrapper{
+	width: 100%;
+	/* max-height: 40em; */
+	flex: 1;
+	overflow-y: auto;
+	order: 0;
+	/* background-color: aquamarine; */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+    }
+    
+    
+    .room_box{
+	border: 5px solid black;
+	width: 300px;
+	border-radius: 20px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	min-height: 300px;
+    }
+    
+    .activity_rect{
+	min-width: 300px;
+	height: 100px;
+	border: 5px solid;
+	border-radius: 10px;
+	/* box-sizing: border-box; */
+    }
+    
+    
+    .recent_activites_header_wrapper{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	max-width: 100%;
+    }
+    
+    
+    .rooms_header_wrapper{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	width: 100%;
+    }
+    
+    .rooms_header_wrapper > p{
+	padding-left: 10px;
+    }
+    
+    .recent_activites_header_wrapper > p{
+	padding-left: 10px;
+    }
+    
+    
+    
+    
+    
+    /* rooms component styles #############################################################*/
+    
+    .create_room_div{
+	border: 5px solid red;
+	width: 300px;
+	border-radius: 20px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	min-height: 300px;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    @media (min-width: 600px) {
+	.body_flex_wrapper {
+	  width: 100%;
+	  flex-direction: row;
+	  align-items: flex-start;
+	}
+    
+	.rooms_activities_wrapper{
+	    width: 100%;
+	    flex-direction: row;
+	    height: inherit;
+	    order: 2;
+	    align-items: flex-start;
+	 
+	}
+    
+	.activities_container{
+	    width: 100%;
+	    flex-direction: column;
+	   
+    
+	}
+    
+	.recent_activites_header_wrapper{
+	    order: 2;
+	}
+    
+	.rooms_header_wrapper{
+	    order: 1;
+	}
+    
+	.rooms_header_wrapper > p{
+	    display: none;
+	}
+    
+	.rooms_container{
+	    width: 100%;
+	    flex-direction: row;
+	    flex-wrap: wrap;
+	    
+	}
+    
+    
+	.nav_panel{
+	    display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	width: fit-content;
+	padding: 10px 40px 10px 100px;
+	flex-direction: column;
+	order: 1;
+	background-color: aliceblue;
+	position: relative;
+	border: none;
+	gap: 30px;
+	height: 100%;
+	padding-top: 50px;
+    
+	}
+    
+	.link_group{
+	    display: flex;
+	    flex-direction: row;
+	    align-items: center;
+	    gap: 10px;
+	
+	}
+    
+	.link_text{
+	    font-size: large;
+	}
+    
+	.menu_btn{
+	    display: none;
+	}
+    
+	.notification_button{
+	    display: block;
+	}
+	.settings_btn{
+	    display: block;
+	}
+    
+	.avtr_content{
+	    display: block;
+	}
+    
+	.avtr_content > p{
+	    margin: 0;
+	}
+    
+	.avtr_image__MtljF {
+	    position: relative;
+	    width: 30px;
+	    height: 100%;
+	}
+    
+	.user_capsule {
+	    display: flex;
+	    margin-left: 10px;
+	    align-items: center;
+	    justify-content: flex-start;
+	    flex-direction: row;
+	}
+    
+	.btns_container {
+	    display: flex;
+	    flex-direction: row;
+	    justify-content: flex-start;
+	    align-items: center;
+    
+	}
+    
+	.btns_container > * {
+	    margin-right: 30px;
+	    margin-left: 30px;
+	}
+    
+	.logo_wrapper_ext{
+	    border-right: 1px solid;
+	    padding-right: 100px;
+	}
+    
+	.header_panel{
+	    padding-left: 100px;
+	    padding-right:100px;
+	}
+	.context_header{
+	    display: block;
+	}
+    
+	.logo_context_header_wrapper{
+	    display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 30px;
+    
+	}
+    
+    
+    
+    
+      }

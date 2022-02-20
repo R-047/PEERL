@@ -3,6 +3,9 @@ const webpack = require("webpack");
 
 module.exports = {
   // reactStrictMode: true,
+  publicRuntimeConfig: {
+    HOST_URL: process.env.HOST_URL
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback.fs = false;

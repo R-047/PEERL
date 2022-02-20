@@ -74,15 +74,6 @@ function Nav_drawer({toggle}) {
 				</ul>
 			</div>
 
-		// <CSSTransition in={open} timeout={2000} classNames={{
-		// 	// appear: styles.navdrawer,
-		// 	enter: styles.navdrawerEnter,
-		// 	enterActive: styles.navdrawerEnterActive,
-		// 	exit: styles.navdrawerExit,
-		// 	exitActive: styles.navdrawerExitActive}}>
-			
-		// </CSSTransition>
-
 	)
 }
 

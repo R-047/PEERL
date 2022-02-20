@@ -1,12 +1,20 @@
 import { getSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
 import styles from '../../styles/HomePage.module.css';
 import Image from 'next/image'
 import Head from 'next/head'
 import Link from 'next/link'
 import CommonHeader from '../../components/CommonHeader';
+import axios from 'axios';
+import getConfig from 'next/config'
+import RoomBox from '../../components/RoomBox'
+
+
+
+const { publicRuntimeConfig } = getConfig()
+const { HOST_URL } = publicRuntimeConfig
 
 function homepage() {
   const router = useRouter()
@@ -22,37 +30,12 @@ function homepage() {
       </Head>
       {/* <button onClick={(e) => signOut({ callbackUrl: 'http://localhost:3000/' })}>sign out</button> */}
 
-      {/* <header className={styles.header_panel}>
-        <button className={styles.menu_btn}></button>
-        <div className={styles.logo_context_header_wrapper}>
-          <div className={styles.logo_wrapper_ext}>
-            <div className={styles.logo_wrapper}>
-              <Image src="/PeerlLogo2.svg" alt="PEERL Logo" layout='fill' quality="100" />
-            </div>
-          </div>
-          <p className={styles.context_header}>peer group</p>
-        </div>
-        <div className={styles.btns_container}>
-          <button className={styles.search_button}></button>
-          <button className={styles.notification_button}></button>
-          <button className={styles.settings_btn}></button>
-          <div className={styles.user_capsule}>
-            <div className={styles.avtr_image}>
-              <Image src='/empty_face.svg' layout='fill'></Image>
-            </div>
-            <div className={styles.avtr_content}>
-              <p className={styles.user_name}>alby</p>
-              <p className={styles.user_rank}>expert</p>
-            </div>
-          </div>
-        </div>
-      </header> */}
 
       <CommonHeader />
 
       <div className={styles.body_flex_wrapper}>
-        {context=='peergroups' && <Peergroup_comp />}
-        {context=='rooms' && <Rooms_comp />}
+        {context == 'peergroups' && <Peergroup_comp />}
+        {context == 'rooms' && <Rooms_comp />}
         <nav className={styles.nav_panel}>
           <Link href="/home/peergroups">
             <div className={styles.link_group}>
@@ -139,6 +122,42 @@ function Peergroup_comp(props) {
 
 
 function Rooms_comp(props) {
+  const router = useRouter()
+
+  const init_state = []
+  const [your_rooms_state, setyour_rooms_state] = useState(init_state)
+
+  useEffect(async () => {
+    //get personal rooms
+    // rooms where room_owner_id = user_id
+    const response = await axios.get(`${HOST_URL}/api/getUsersRooms`)
+    
+    setyour_rooms_state(response.data.result)
+
+  }, [])
+
+
+  const onRoomBoxClick = (id, name) => {
+    router.push({
+      pathname: `/rooms/${name}/resources`,
+      query: { room_id: id }
+  },undefined, {shallow:true})
+  }
+
+  const users_rooms_comp = your_rooms_state.map((ele) => {
+    return (
+      <RoomBox key={ele._id} key_id ={ele._id} room_name={ele.room_name} action={onRoomBoxClick}  />
+    )
+  })
+
+
+
+
+  const onCreateClick = (e) => {
+    router.push("/createroom")
+  }
+
+
   const rooms_comp_jsx = (
     <div className={styles.rooms_activities_wrapper}>
 
@@ -163,13 +182,10 @@ function Rooms_comp(props) {
         <p>rooms created</p>
         <div className={styles.rooms_container}>
           <div className={styles.create_room_div}>
+            <p>want to build a new peer group to teach and learn something new...?</p>
+            <button onClick={onCreateClick}>create room</button>
           </div>
-          <div className={styles.room_box}>
-          </div>
-          <div className={styles.room_box}>
-          </div>
-          <div className={styles.room_box}>
-          </div>
+          {users_rooms_comp}
         </div>
       </div>
     </div>
@@ -184,6 +200,8 @@ function Subs_comp(props) {
 function Notebooks_comp(props) {
 
 }
+
+
 
 
 // function getServerSideProps(context){
