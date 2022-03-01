@@ -5,6 +5,10 @@ import ImageWidget from './widgets/ImageWidget'
 import shortUUID from 'short-uuid'
 import styled from 'styled-components'
 import CodeWidget from './widgets/CodeWidget'
+import VideoWidget from './widgets/VideoWidget'
+import FileWidget from './widgets/FileWidget'
+import getConfig from 'next/config'
+import axios from 'axios'
 
 
 
@@ -35,6 +39,12 @@ const WidgetContentWrapper = styled.div`
 	overflow: hidden;
 `
 
+const HeaderWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+`
+
 
 
 
@@ -42,11 +52,15 @@ const WidgetContentWrapper = styled.div`
 
 function ResourceCreationComp() {
 
+	const {publicRuntimeConfig} = getConfig()
+	const {HOST_URL} = publicRuntimeConfig
+
 	const init_widgets_arr = [
 
 	]
 
 	const [Resource_data, setResource_data] = useState(init_widgets_arr)
+	const [submissionFlag, setsubmissionFlag] = useState(false)
 
 
 	const onWidgetDelete = (del_index) => {
@@ -68,18 +82,48 @@ function ResourceCreationComp() {
 		setResource_data(UpdatedResourceData)
 	}
 
-	const onSubmit = (e) => {
+	const SubmitCheckFunc = () => {
+		return submissionFlag
+	}
+
+	const onSubmit = async (e) => {
+		console.log("submission flag value before", SubmitCheckFunc())
+		setsubmissionFlag(true)
+		console.log("submission flag value", SubmitCheckFunc())
+
 		console.log("🚀 ~ file: ResourceCreationComp.js ~ line 35 ~ onSubmit ~ Resource_data", Resource_data)
+		
+		const response = await axios.post(`${HOST_URL}/api/uploadresource`, {Resource_data})
+
+                console.log("🚀 ~ file: ResourceCreationComp.js ~ line 89 ~ onSubmit ~ response", response)
 	}
 
 
 	const ContentArr = Resource_data.map((ele, index) => {
 
-		return ele.type == "link" ? <LinkWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} />
-			: ele.type == "text" ? <TextWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} />
-				: ele.type == "image" ? <ImageWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} />
-					: ele.type == "code" ? <CodeWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} />
-					:undefined
+		switch(ele.type){
+			case "link":
+				return  <LinkWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} mode="write"/>
+				
+			case "text":
+				return <TextWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} />
+			
+			case "image":
+				return <ImageWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} submissionFlag={SubmitCheckFunc}/>
+			
+			case "code":
+				return <CodeWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} />
+
+			case "video":
+				return <VideoWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} submissionFlag={SubmitCheckFunc}/>
+			
+			case "file":
+				return <FileWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} submissionFlag={SubmitCheckFunc}/>
+
+			default:
+				return undefined
+		}
+
 	})
 
 
@@ -105,7 +149,7 @@ function ResourceCreationComp() {
 				{
 					id: shortUUID().new(),
 					type: "text",
-					text_content: "lorem ipsum"
+					text_content: ""
 				}
 			]
 		})
@@ -118,7 +162,7 @@ function ResourceCreationComp() {
 				{
 					id: shortUUID().new(),
 					type: "image",
-					image: undefined
+					image_link: undefined
 				}
 			]
 		})
@@ -132,8 +176,37 @@ function ResourceCreationComp() {
 				{
 					id: shortUUID().new(),
 					type: "code",
+					language: "javascript",
 					code: undefined,
 					output: undefined
+				}
+			]
+		})
+	}
+
+
+	const onVideoWidgetClick = () => {
+		setResource_data((prev_State) => {
+			return [
+				...prev_State,
+				{
+					id: shortUUID().new(),
+					type: "video",
+					video_link: undefined
+				}
+			]
+		})
+	}
+
+
+	const onFileWidgetClick = () => {
+		setResource_data((prev_State) => {
+			return [
+				...prev_State,
+				{
+					id: shortUUID().new(),
+					type: "file",
+					file_link: undefined
 				}
 			]
 		})
@@ -147,20 +220,24 @@ function ResourceCreationComp() {
 	return (
 		<>
 		
-			<h1>header</h1>
+			<HeaderWrapper>
+				<h1>header</h1>
+				<button onClick={onSubmit}>submit</button> 
+			</HeaderWrapper>
 				<WidgetContentWrapper>
 					<WidgetContainer>
 						<div onClick={onLinkWidgetClick} >link</div>
 						<div onClick={onTextWidgetClick}>text</div>
 						<div onClick={onImageWidgetClick}>image</div>
-						<div>file</div>
+						<div onClick={onFileWidgetClick}>file</div>
 						<div onClick={onCodeWidgetClick}>code</div>
+						<div onClick={onVideoWidgetClick}>video</div>
 					</WidgetContainer>
 					<ContentContainer>{ContentArr}</ContentContainer>
 				</WidgetContentWrapper>
 		
 
-			 {/* <button onClick={onSubmit}>submit</button>  */}
+			 
 		</>
 
 	)

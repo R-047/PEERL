@@ -11,7 +11,8 @@ const withTM = require("next-transpile-modules")([
 module.exports = withTM({
   // reactStrictMode: true,
   publicRuntimeConfig: {
-    HOST_URL: process.env.HOST_URL
+    HOST_URL: process.env.HOST_URL,
+    ROOT_DIR: __dirname
   },
 
 

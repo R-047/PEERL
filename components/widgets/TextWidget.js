@@ -55,7 +55,7 @@ function TextWidget({del_index, del_function, widget_data, update_data}) {
     setTextCompData((prev_State) => {
       const new_obj = {
         ...prev_State,
-        url: e.target.value
+        text_content: e.target.value
       }
       return new_obj
     })
@@ -71,7 +71,7 @@ function TextWidget({del_index, del_function, widget_data, update_data}) {
   return (
     <StyledWrapper>
       <StyledDeleteBtn onClick={(e) => del_function(del_index)}></StyledDeleteBtn>
-      <SyltedInput placeholder='enter text content' type='text' value={TextCompData.url} onChange={onTextChange}></SyltedInput>
+      <SyltedInput placeholder='enter text content' type='text' value={TextCompData.text_content} onChange={onTextChange}></SyltedInput>
     </StyledWrapper>
    
   )

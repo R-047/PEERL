@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import img from '../../public/delete_widget_ic.svg'
 
@@ -9,7 +9,7 @@ import img from '../../public/delete_widget_ic.svg'
 const SyltedInput = styled.input`
 padding: 0.5em;
 margin: 0.5em;
-background: papayawhip;
+background: white;
 border: none;
 border-radius: 3px;
 order: 1;
@@ -32,6 +32,12 @@ border: none;
 order: 2;
 `
 
+const LinkDisplayContainer = styled.div`
+  width: 100%;
+  height: fit-content;
+  background-color: papayawhip;
+`
+
 const StyledWrapper = styled.div`
 display: flex;
 
@@ -41,10 +47,10 @@ display: flex;
 
 
 
-function LinkWidget({del_index, del_function, widget_data, update_data}) {
+function LinkWidget({ del_index, del_function, widget_data, update_data, mode }) {
   const [LinkCompData, setLinkCompData] = useState(widget_data)
 
-  
+
   useEffect(() => {
     update_data(LinkCompData)
   }, [LinkCompData])
@@ -60,19 +66,27 @@ function LinkWidget({del_index, del_function, widget_data, update_data}) {
     })
     // console.log("🚀 ~ file: LinkWidget.js ~ line 20 ~ onTextChange ~ LinkCompData", LinkCompData)
 
-    
+
   }
 
 
 
 
-    
+
   return (
     <StyledWrapper>
-      <StyledDeleteBtn onClick={(e) => del_function(del_index)}></StyledDeleteBtn>
-      <SyltedInput placeholder='paste a link or enter text content' type='text' value={LinkCompData.url} onChange={onTextChange}></SyltedInput>
+      {
+        mode == "write" ?
+          <>
+            <StyledDeleteBtn onClick={(e) => del_function(del_index)}></StyledDeleteBtn>
+            <SyltedInput placeholder='paste a link or enter text content' type='text' value={LinkCompData.url} onChange={onTextChange}></SyltedInput>
+          </> :
+          <LinkDisplayContainer>
+            {LinkCompData.url}
+          </LinkDisplayContainer>
+      }
     </StyledWrapper>
-   
+
   )
 }
 

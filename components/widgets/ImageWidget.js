@@ -1,7 +1,9 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import styled from 'styled-components'
 import img from '../../public/delete_widget_ic.svg'
+import getConfig from 'next/config'
+import axios from 'axios'
 
 
 const ImageWrapper = styled.div`
@@ -39,62 +41,75 @@ height: 300px;
 position: relative;
 `
 
-function ImageWidget({del_index, del_function, widget_data, update_data}) {
+function ImageWidget({ del_index, del_function, widget_data, update_data, submissionFlag }) {
+  const { publicRuntimeConfig } = getConfig()
+  const { HOST_URL } = publicRuntimeConfig
+
   const [image_comp_State, setimage_comp_State] = useState(widget_data)
-  
+
   useEffect(() => {
-    if(!image_comp_State.image){
+    if (!image_comp_State.image_link) {
       let input = document.createElement('input');
       input.type = 'file';
       input.onchange = onFileUploaded
       input.click();
-    }else{
+    } else {
       update_data(image_comp_State)
     }
-  },[image_comp_State])
+
+    return async () => {
+      console.log(image_comp_State.image_link)
+      if(!submissionFlag()){
+        console.log("🚀 ~ file: VideoWidget.js ~ line 56 ~ return ~ submissionFlag", submissionFlag())
+
+        const response = await axios.delete(`${HOST_URL}/api/delBlob/r/${image_comp_State.file_name}`)
+        console.log(response)
+      }
+      
+      
+    }
+  }, [image_comp_State])
 
 
 
-  const onFileUploaded = (e) =>{
+  const onFileUploaded = async (e) => {
     const in_file = e.target.files[0]
-    
-    
-    if(in_file){
-      const reader = new FileReader();
-      reader.addEventListener("load", function() {
-        // setfile(this.result)
-        setimage_comp_State((prev_value) => {
-          return {...prev_value, image_file: this.result, image: in_file}
-        })
+
+    if (in_file) {
+      const formdata = new FormData()
+      formdata.append("file", in_file)
+      const response = await axios.post(`${HOST_URL}/api/uploadBlob/upload`, formdata)
+      console.log(response)
+      const image_link = response.data.file_link
+      const file_name = response.data.file_name
+      setimage_comp_State((prev_value) => {
+        return { ...prev_value, image_link: image_link, file_name: file_name }
       })
-      reader.readAsDataURL(in_file)
-    } 
+    }
   }
 
 
   const ele = (
-        !image_comp_State.image ? undefined : 
+    !image_comp_State.image_link ? undefined :
 
-        <>
-          <StyledDeleteBtn onClick={(e) => del_function(del_index)}></StyledDeleteBtn>
-          <ImageWrapper>
-                  <Image src={image_comp_State.image_file} layout="responsive" width={0} height={0} quality="100"/>
-            </ImageWrapper>
-              {/* <ImageContainer> */}
-                
-              {/* </ImageContainer> */}
-        </>
-         
-  
+      <>
+        <StyledDeleteBtn onClick={(e) => del_function(del_index)}></StyledDeleteBtn>
+        <ImageWrapper>
+          <Image src={image_comp_State.image_link} layout="responsive" width={0} height={0} quality="100" />
+        </ImageWrapper>
+
+      </>
+
+
   )
 
   return (
     <StyledWrapper>
-      
+
       {ele}
     </StyledWrapper>
-    
-    
+
+
   )
 }
 
