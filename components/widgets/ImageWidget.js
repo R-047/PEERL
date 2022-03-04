@@ -41,11 +41,13 @@ height: 300px;
 position: relative;
 `
 
-function ImageWidget({ del_index, del_function, widget_data, update_data, submissionFlag }) {
+function ImageWidget({ del_index, del_function, widget_data, update_data}) {
   const { publicRuntimeConfig } = getConfig()
   const { HOST_URL } = publicRuntimeConfig
 
   const [image_comp_State, setimage_comp_State] = useState(widget_data)
+
+  
 
   useEffect(() => {
     if (!image_comp_State.image_link) {
@@ -57,18 +59,18 @@ function ImageWidget({ del_index, del_function, widget_data, update_data, submis
       update_data(image_comp_State)
     }
 
-    return async () => {
-      console.log(image_comp_State.image_link)
-      if(!submissionFlag()){
-        console.log("🚀 ~ file: VideoWidget.js ~ line 56 ~ return ~ submissionFlag", submissionFlag())
+    console.log("image widget updated###############################", image_comp_State) 
 
-        const response = await axios.delete(`${HOST_URL}/api/delBlob/r/${image_comp_State.file_name}`)
-        console.log(response)
-      }
-      
-      
+    return async () => {
+        
+        const payload = image_comp_State
+        const response = await axios.delete(`${HOST_URL}/api/cleanUp`, {data: payload})
+        console.log("response after deleted", response)
     }
+    
   }, [image_comp_State])
+
+
 
 
 
@@ -86,6 +88,8 @@ function ImageWidget({ del_index, del_function, widget_data, update_data, submis
         return { ...prev_value, image_link: image_link, file_name: file_name }
       })
     }
+
+
   }
 
 
@@ -105,7 +109,6 @@ function ImageWidget({ del_index, del_function, widget_data, update_data, submis
 
   return (
     <StyledWrapper>
-
       {ele}
     </StyledWrapper>
 

@@ -33,7 +33,7 @@ const VideoWrapper = styled.div`
 
 `
 
-function VideoWidget({ del_index, del_function, widget_data, update_data, submissionFlag }) {
+function VideoWidget({ del_index, del_function, widget_data, update_data}) {
 
 	const { publicRuntimeConfig } = getConfig()
 	const { HOST_URL } = publicRuntimeConfig
@@ -51,17 +51,11 @@ function VideoWidget({ del_index, del_function, widget_data, update_data, submis
 		}
 
 		return async () => {
-			console.log(video_comp_state.video_link)
-			if(!submissionFlag()){
-				console.log("deleting comp destroyed")
-                        console.log("🚀 ~ file: VideoWidget.js ~ line 56 ~ return ~ submissionFlag", submissionFlag())
-			
-			  const response = await axios.delete(`${HOST_URL}/api/delBlob/r/${video_comp_state.video_name}`)
-			  console.log(response)
-			}
-			
-			
-		      }
+        
+			const payload = video_comp_state
+			const response = await axios.delete(`${HOST_URL}/api/cleanUp`, {data: payload})
+			console.log("response after deleted", response)
+		    }
 	}, [video_comp_state])
 
 
@@ -78,7 +72,7 @@ function VideoWidget({ del_index, del_function, widget_data, update_data, submis
 			const video_name = response.data.file_name
 			const video_org_name = response.data.file_org_name
 			setvideo_comp_state((prev_value) => {
-				return { ...prev_value, video_link: video_link, video_name: video_name, video_org_name: video_org_name }
+				return { ...prev_value, video_link: video_link, file_name: video_name, video_org_name: video_org_name }
 			})
 		}
 	}

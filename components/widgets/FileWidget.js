@@ -36,7 +36,7 @@ const FileWrapper = styled.div`
 
 
 
-function FileWidget({ del_index, del_function, widget_data, update_data, submissionFlag }) {
+function FileWidget({ del_index, del_function, widget_data, update_data}) {
 
 	const { publicRuntimeConfig } = getConfig()
 	const { HOST_URL } = publicRuntimeConfig
@@ -53,16 +53,11 @@ function FileWidget({ del_index, del_function, widget_data, update_data, submiss
 		}
 
 		return async () => {
-			console.log(file_comp_state.file_link)
-			if(!submissionFlag()){
-				console.log("🚀 ~ file: VideoWidget.js ~ line 56 ~ return ~ submissionFlag", submissionFlag())
-
-			  const response = await axios.delete(`${HOST_URL}/api/delBlob/r/${file_comp_state.file_name}`)
-			  console.log(response)
-			}
-			
-			
-		      }
+        
+			const payload = file_comp_state
+			const response = await axios.delete(`${HOST_URL}/api/cleanUp`, {data: payload})
+			console.log("response after deleted", response)
+		    }
 	}, [file_comp_state])
 
 

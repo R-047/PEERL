@@ -9,6 +9,7 @@ import VideoWidget from './widgets/VideoWidget'
 import FileWidget from './widgets/FileWidget'
 import getConfig from 'next/config'
 import axios from 'axios'
+import { getSession } from "next-auth/react"
 
 
 
@@ -50,17 +51,33 @@ const HeaderWrapper = styled.div`
 
 
 
-function ResourceCreationComp() {
+function ResourceCreationComp({room_id}) {
 
 	const {publicRuntimeConfig} = getConfig()
 	const {HOST_URL} = publicRuntimeConfig
 
-	const init_widgets_arr = [
+	
+	
+	const [ResourceMetaData, setResourceMetaData] = useState({
+		resource_client_id: `resource_${shortUUID().new()}`,
+		room_id: room_id,
+		resource_title: ""
+	})
 
-	]
-
-	const [Resource_data, setResource_data] = useState(init_widgets_arr)
+	const [Resource_data, setResource_data] = useState([])
 	const [submissionFlag, setsubmissionFlag] = useState(false)
+
+	
+
+	
+	const onHeadingChanged = (e) => {
+		setResourceMetaData((prev_value) => {
+			return {
+				...prev_value,
+				resource_title: e.target.value
+			}
+		})
+	}
 
 
 	const onWidgetDelete = (del_index) => {
@@ -82,20 +99,22 @@ function ResourceCreationComp() {
 		setResource_data(UpdatedResourceData)
 	}
 
-	const SubmitCheckFunc = () => {
-		return submissionFlag
-	}
+	
 
 	const onSubmit = async (e) => {
-		console.log("submission flag value before", SubmitCheckFunc())
+
 		setsubmissionFlag(true)
-		console.log("submission flag value", SubmitCheckFunc())
-
-		console.log("🚀 ~ file: ResourceCreationComp.js ~ line 35 ~ onSubmit ~ Resource_data", Resource_data)
 		
-		const response = await axios.post(`${HOST_URL}/api/uploadresource`, {Resource_data})
-
-                console.log("🚀 ~ file: ResourceCreationComp.js ~ line 89 ~ onSubmit ~ response", response)
+		// const response = await axios.post(`${HOST_URL}/api/uploadresource`, {Resource_data})
+                console.log("🚀 ~ file: ResourceCreationComp.js ~ line 108 ~ onSubmit ~ Resource_data", Resource_data)
+		console.log(ResourceMetaData)
+		const resources_obj = {
+			resource_meta_data: ResourceMetaData,
+			resources: Resource_data
+		}
+                console.log("🚀 ~ file: ResourceCreationComp.js ~ line 114 ~ onSubmit ~ resources_obj", resources_obj)
+		const response = await axios.post(`${HOST_URL}/api/uploadresource`, {resources_obj})
+		console.log(response)
 	}
 
 
@@ -109,16 +128,16 @@ function ResourceCreationComp() {
 				return <TextWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} />
 			
 			case "image":
-				return <ImageWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} submissionFlag={SubmitCheckFunc}/>
+				return <ImageWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} />
 			
 			case "code":
 				return <CodeWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} />
 
 			case "video":
-				return <VideoWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} submissionFlag={SubmitCheckFunc}/>
+				return <VideoWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} />
 			
 			case "file":
-				return <FileWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} submissionFlag={SubmitCheckFunc}/>
+				return <FileWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} />
 
 			default:
 				return undefined
@@ -134,6 +153,7 @@ function ResourceCreationComp() {
 			return [
 				...prev_State,
 				{
+					resource_client_id: ResourceMetaData.resource_client_id,
 					id: shortUUID().new(),
 					type: "link",
 					url: ""
@@ -147,6 +167,7 @@ function ResourceCreationComp() {
 			return [
 				...prev_State,
 				{
+					resource_client_id: ResourceMetaData.resource_client_id,
 					id: shortUUID().new(),
 					type: "text",
 					text_content: ""
@@ -160,6 +181,7 @@ function ResourceCreationComp() {
 			return [
 				...prev_State,
 				{
+					resource_client_id: ResourceMetaData.resource_client_id,
 					id: shortUUID().new(),
 					type: "image",
 					image_link: undefined
@@ -174,6 +196,8 @@ function ResourceCreationComp() {
 			return [
 				...prev_State,
 				{
+
+					resource_client_id: ResourceMetaData.resource_client_id,
 					id: shortUUID().new(),
 					type: "code",
 					language: "javascript",
@@ -190,6 +214,7 @@ function ResourceCreationComp() {
 			return [
 				...prev_State,
 				{
+					resource_client_id: ResourceMetaData.resource_client_id,
 					id: shortUUID().new(),
 					type: "video",
 					video_link: undefined
@@ -204,6 +229,7 @@ function ResourceCreationComp() {
 			return [
 				...prev_State,
 				{
+					resource_client_id: ResourceMetaData.resource_client_id,
 					id: shortUUID().new(),
 					type: "file",
 					file_link: undefined
@@ -222,6 +248,7 @@ function ResourceCreationComp() {
 		
 			<HeaderWrapper>
 				<h1>header</h1>
+				<input type="text" value={ResourceMetaData.resource_title} onChange={onHeadingChanged}></input>
 				<button onClick={onSubmit}>submit</button> 
 			</HeaderWrapper>
 				<WidgetContentWrapper>
@@ -244,3 +271,5 @@ function ResourceCreationComp() {
 }
 
 export default ResourceCreationComp
+
+

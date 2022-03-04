@@ -18,6 +18,7 @@ apiRoute.post(async (req, res) => {
 	const room_image = Object.keys(req.files).length ? req.files.room_image[0] : undefined
 	const room_dp = Object.keys(req.files).length ? req.files.room_dp[0] : undefined
 	
+	
 
 	let room = {
 	room_owner_id: new ObjectId(id),

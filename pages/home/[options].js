@@ -204,8 +204,3 @@ function Notebooks_comp(props) {
 
 
 
-// function getServerSideProps(context){
-
-// }
-
-

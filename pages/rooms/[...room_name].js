@@ -18,6 +18,9 @@ function room({ room_info }) {
   const { room_name = [], room_id } = router.query;
   const [modalState, setmodalState] = useState(false)
 
+
+
+
   const openModal = (e) => {
     if (modalState) {
       setmodalState(false)
@@ -67,7 +70,7 @@ function room({ room_info }) {
       className={styles.RCModalStyles}
       overlayClassName={styles.RCModalOverlayStyles}
       >
-        <ResourceCreationComp />
+        <ResourceCreationComp room_id={room_info._id}/>
       </Modal>
 
     </div>
