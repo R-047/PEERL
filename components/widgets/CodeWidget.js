@@ -68,7 +68,7 @@ const CodeEditorHeader = styled.div`
 
 
 
-function CodeWidget({ del_index, del_function, widget_data, update_data }) {
+function CodeWidget({ del_index, del_function, widget_data, update_data, mode }) {
 	
         const [code_comp_state, setcode_comp_state] = useState(widget_data)
 
@@ -117,7 +117,7 @@ function CodeWidget({ del_index, del_function, widget_data, update_data }) {
 
 	return (
 		<StyledWrapper>
-			<StyledDeleteBtn onClick={(e) => del_function(del_index)}></StyledDeleteBtn>
+			{mode == "write" && <StyledDeleteBtn onClick={(e) => del_function(del_index)}></StyledDeleteBtn>}
 			<CodeEditorWrapper>
 				<CodeEditorHeader>
 					<CodeRunBtn onClick={onCodeRun}> run </CodeRunBtn>

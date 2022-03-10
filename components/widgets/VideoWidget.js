@@ -33,12 +33,12 @@ const VideoWrapper = styled.div`
 
 `
 
-function VideoWidget({ del_index, del_function, widget_data, update_data}) {
+function VideoWidget({ del_index, del_function, widget_data, update_data, mode }) {
 
 	const { publicRuntimeConfig } = getConfig()
 	const { HOST_URL } = publicRuntimeConfig
 	const [video_comp_state, setvideo_comp_state] = useState(widget_data)
-	
+
 
 	useEffect(() => {
 		if (!video_comp_state.video_link) {
@@ -51,18 +51,18 @@ function VideoWidget({ del_index, del_function, widget_data, update_data}) {
 		}
 
 		return async () => {
-        
+
 			const payload = video_comp_state
-			const response = await axios.delete(`${HOST_URL}/api/cleanUp`, {data: payload})
+			const response = await axios.delete(`${HOST_URL}/api/cleanUp`, { data: payload })
 			console.log("response after deleted", response)
-		    }
+		}
 	}, [video_comp_state])
 
 
 
 	const onFileUploaded = async (e) => {
 		const in_file = e.target.files[0]
-		
+
 		if (in_file) {
 			const formdata = new FormData()
 			formdata.append("file", in_file)
@@ -79,17 +79,24 @@ function VideoWidget({ del_index, del_function, widget_data, update_data}) {
 
 
 	const ele = (
-		!video_comp_state.video_link ? "loading" : 
-	
-		<>
-		  <StyledDeleteBtn onClick={(e) => del_function(del_index)}></StyledDeleteBtn>
-		  <VideoWrapper>
-			  <video src={video_comp_state.video_link} controls width="250"/>
-		    </VideoWrapper>
-		</>
-		 
-	  
-	  )
+		!video_comp_state.video_link ? "loading" :
+
+			<>
+
+				{mode == "write" ?
+					<>
+						<StyledDeleteBtn onClick={(e) => del_function(del_index)}></StyledDeleteBtn>
+						<VideoWrapper>
+							<video src={video_comp_state.video_link} controls width="250" />
+						</VideoWrapper>
+					</> :
+					<VideoWrapper>
+						<video src={video_comp_state.video_link} controls width="250" />
+					</VideoWrapper>}
+			</>
+
+
+	)
 
 
 	return (

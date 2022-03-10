@@ -41,13 +41,13 @@ height: 300px;
 position: relative;
 `
 
-function ImageWidget({ del_index, del_function, widget_data, update_data}) {
+function ImageWidget({ del_index, del_function, widget_data, update_data, mode }) {
   const { publicRuntimeConfig } = getConfig()
   const { HOST_URL } = publicRuntimeConfig
 
   const [image_comp_State, setimage_comp_State] = useState(widget_data)
 
-  
+
 
   useEffect(() => {
     if (!image_comp_State.image_link) {
@@ -59,15 +59,15 @@ function ImageWidget({ del_index, del_function, widget_data, update_data}) {
       update_data(image_comp_State)
     }
 
-    console.log("image widget updated###############################", image_comp_State) 
+    console.log("image widget updated###############################", image_comp_State)
 
     return async () => {
-        
-        const payload = image_comp_State
-        const response = await axios.delete(`${HOST_URL}/api/cleanUp`, {data: payload})
-        console.log("response after deleted", response)
+
+      const payload = image_comp_State
+      const response = await axios.delete(`${HOST_URL}/api/cleanUp`, { data: payload })
+      console.log("response after deleted", response)
     }
-    
+
   }, [image_comp_State])
 
 
@@ -97,10 +97,17 @@ function ImageWidget({ del_index, del_function, widget_data, update_data}) {
     !image_comp_State.image_link ? undefined :
 
       <>
-        <StyledDeleteBtn onClick={(e) => del_function(del_index)}></StyledDeleteBtn>
+        {mode == "write" ?
+        <>
+          <StyledDeleteBtn onClick={(e) => del_function(del_index)}></StyledDeleteBtn>
+          <ImageWrapper>
+            <Image src={image_comp_State.image_link} layout="responsive" width={0} height={0} quality="100" />
+          </ImageWrapper>
+        </> :
         <ImageWrapper>
-          <Image src={image_comp_State.image_link} layout="responsive" width={0} height={0} quality="100" />
-        </ImageWrapper>
+            <Image src={image_comp_State.image_link} layout="responsive" width={0} height={0} quality="100" />
+          </ImageWrapper>}
+
 
       </>
 

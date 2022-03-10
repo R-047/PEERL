@@ -7,6 +7,9 @@ import styles from '../../styles/Room.module.css'
 import clientPromise, { ObjectId } from '../../lib/mongodb'
 import Modal from 'react-modal'
 import ResourceCreationComp from '../../components/ResourceCreationComp'
+import axios from 'axios'
+import getConfig from "next/config"
+
 
 
 Modal.setAppElement('#__next')
@@ -40,7 +43,7 @@ function room({ room_info }) {
       </Head>
       <RoomHeader />
       <div className={styles.body_flex_wrapper}>
-        {room_name[1] == 'resources' && <Resources_Comp openModal={openModal} />}
+        {room_name[1] == 'resources' && <Resources_Comp openModal={openModal} room_id={room_id} />}
         {room_name[1] == 'qna' && <Qna_Comp />}
         {room_name[1] == 'voices' && <Voices_Comp />}
         <nav className={styles.nav_panel}>
@@ -70,7 +73,7 @@ function room({ room_info }) {
       className={styles.RCModalStyles}
       overlayClassName={styles.RCModalOverlayStyles}
       >
-        <ResourceCreationComp room_id={room_info._id}/>
+        <ResourceCreationComp room_id={room_info._id} resource_cont_mode="write"/>
       </Modal>
 
     </div>
@@ -99,6 +102,25 @@ function room({ room_info }) {
 
 
 function Resources_Comp(props) {
+  const { publicRuntimeConfig } = getConfig()
+	const { HOST_URL } = publicRuntimeConfig
+
+  const [resourceState, setresourceState] = useState([])
+
+  useEffect(async () => {
+    
+    const response = await axios.get(`${HOST_URL}/api/getRoomResources?room_id=${props.room_id}`)
+    console.log("🚀 ~ file: [...room_name].js ~ line 112 ~ useEffect ~ response", response.data)
+    setresourceState(response.data)
+
+  }, [])
+
+  const ResourcesItemsArr = resourceState.map(ele => {
+    console.log("🚀 ~ file: [...room_name].js ~ line 119 ~ Resources_Comp ~ ele", ele)
+    
+    return <ResourceCreationComp key={ele._id} resource_obj={ele} resource_cont_mode="read" />
+  })
+  
 
   const Resources_Comp_jsx = (
     <div className={styles.rooms_activities_wrapper}>
@@ -126,12 +148,15 @@ function Resources_Comp(props) {
           <div className={styles.create_resource_div}>
             <button onClick={props.openModal}>create resources</button>
           </div>
-          <div className={styles.room_box}>
+          {/* <div className={styles.room_box}>
           </div>
           <div className={styles.room_box}>
           </div>
           <div className={styles.room_box}>
-          </div>
+          </div> */}
+          {ResourcesItemsArr}
+
+
         </div>
       </div>
     </div>

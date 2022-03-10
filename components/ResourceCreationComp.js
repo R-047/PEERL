@@ -10,6 +10,7 @@ import FileWidget from './widgets/FileWidget'
 import getConfig from 'next/config'
 import axios from 'axios'
 import { getSession } from "next-auth/react"
+import TagsComponent from './TagsComponent'
 
 
 
@@ -51,30 +52,40 @@ const HeaderWrapper = styled.div`
 
 
 
-function ResourceCreationComp({room_id}) {
+function ResourceCreationComp({ room_id, resource_obj, resource_cont_mode }) {
 
-	const {publicRuntimeConfig} = getConfig()
-	const {HOST_URL} = publicRuntimeConfig
+	const { publicRuntimeConfig } = getConfig()
+	const { HOST_URL } = publicRuntimeConfig
 
-	
-	
+
+
 	const [ResourceMetaData, setResourceMetaData] = useState({
-		resource_client_id: `resource_${shortUUID().new()}`,
-		room_id: room_id,
-		resource_title: ""
+		resource_client_id: resource_obj ? resource_obj.resource_client_id : `resource_${shortUUID().new()}`,
+		room_id: resource_obj ? resource_obj.room_id : room_id,
+		resource_title: resource_obj ? resource_obj.resource_title : "",
+		resource_description: resource_obj ? resource_obj.resource_description : "",
+		tags: resource_obj ? resource_obj.tags : []
 	})
 
-	const [Resource_data, setResource_data] = useState([])
-	const [submissionFlag, setsubmissionFlag] = useState(false)
+	const [Resource_data, setResource_data] = useState(resource_obj ? resource_obj.resources_arr : [])
 
-	
 
-	
+
+
 	const onHeadingChanged = (e) => {
 		setResourceMetaData((prev_value) => {
 			return {
 				...prev_value,
 				resource_title: e.target.value
+			}
+		})
+	}
+
+	const onDescriptionChanged = (e) => {
+		setResourceMetaData((prev_value) => {
+			return {
+				...prev_value,
+				resource_description: e.target.value
 			}
 		})
 	}
@@ -99,45 +110,58 @@ function ResourceCreationComp({room_id}) {
 		setResource_data(UpdatedResourceData)
 	}
 
-	
+
 
 	const onSubmit = async (e) => {
 
-		setsubmissionFlag(true)
-		
+
+
 		// const response = await axios.post(`${HOST_URL}/api/uploadresource`, {Resource_data})
-                console.log("🚀 ~ file: ResourceCreationComp.js ~ line 108 ~ onSubmit ~ Resource_data", Resource_data)
+		console.log("🚀 ~ file: ResourceCreationComp.js ~ line 108 ~ onSubmit ~ Resource_data", Resource_data)
 		console.log(ResourceMetaData)
 		const resources_obj = {
 			resource_meta_data: ResourceMetaData,
 			resources: Resource_data
 		}
-                console.log("🚀 ~ file: ResourceCreationComp.js ~ line 114 ~ onSubmit ~ resources_obj", resources_obj)
-		const response = await axios.post(`${HOST_URL}/api/uploadresource`, {resources_obj})
+		console.log("🚀 ~ file: ResourceCreationComp.js ~ line 114 ~ onSubmit ~ resources_obj", resources_obj)
+		const response = await axios.post(`${HOST_URL}/api/uploadresource`, { resources_obj })
 		console.log(response)
 	}
+
+	const onUpdate = async (e) => {
+		console.log("updating")
+	}
+
+	const onTagsUpdate = (tags_arr) => {
+		setResourceMetaData((prev_value) => {
+			return {
+				...prev_value,
+				tags: tags_arr
+			}
+		})
+	} 
 
 
 	const ContentArr = Resource_data.map((ele, index) => {
 
-		switch(ele.type){
+		switch (ele.type) {
 			case "link":
-				return  <LinkWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} mode="write"/>
-				
+				return <LinkWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} mode={resource_cont_mode} />
+
 			case "text":
-				return <TextWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} />
-			
+				return <TextWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} mode={resource_cont_mode} />
+
 			case "image":
-				return <ImageWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} />
-			
+				return <ImageWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} mode={resource_cont_mode} />
+
 			case "code":
-				return <CodeWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} />
+				return <CodeWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} mode={resource_cont_mode} />
 
 			case "video":
-				return <VideoWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} />
-			
+				return <VideoWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} mode={resource_cont_mode} />
+
 			case "file":
-				return <FileWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} />
+				return <FileWidget key={ele.id} del_index={index} del_function={onWidgetDelete} widget_data={ele} update_data={onDataUpdate} mode={resource_cont_mode} />
 
 			default:
 				return undefined
@@ -245,13 +269,19 @@ function ResourceCreationComp({room_id}) {
 
 	return (
 		<>
-		
+
 			<HeaderWrapper>
-				<h1>header</h1>
-				<input type="text" value={ResourceMetaData.resource_title} onChange={onHeadingChanged}></input>
-				<button onClick={onSubmit}>submit</button> 
+				
+				{(resource_cont_mode == "write" || resource_cont_mode == "update") ? <input type="text" value={ResourceMetaData.resource_title} onChange={onHeadingChanged} placeholder="title"></input> : <h1>{ResourceMetaData.resource_title}</h1>}
+				{(resource_cont_mode == "write" || resource_cont_mode == "update") ? <input type="text" value={ResourceMetaData.resource_description} onChange={onDescriptionChanged} placeholder="description"></input> : <h1>{ResourceMetaData.resource_description}</h1>}
+				{(resource_cont_mode == "write" || resource_cont_mode == "update") ? <TagsComponent mode="write" tagsArrUpdate={onTagsUpdate} tags={ResourceMetaData.tags}/>: <TagsComponent mode="read" tagsArrUpdate={onTagsUpdate} tags={ResourceMetaData.tags}/>}
+				{resource_cont_mode == "write" && <button onClick={onSubmit}>submit</button>}
+				{resource_cont_mode == "update" && <button onClick={onUpdate}>update</button>}
 			</HeaderWrapper>
-				<WidgetContentWrapper>
+			<WidgetContentWrapper>
+
+				{
+					(resource_cont_mode == "write" || resource_cont_mode == "update") &&
 					<WidgetContainer>
 						<div onClick={onLinkWidgetClick} >link</div>
 						<div onClick={onTextWidgetClick}>text</div>
@@ -260,11 +290,13 @@ function ResourceCreationComp({room_id}) {
 						<div onClick={onCodeWidgetClick}>code</div>
 						<div onClick={onVideoWidgetClick}>video</div>
 					</WidgetContainer>
-					<ContentContainer>{ContentArr}</ContentContainer>
-				</WidgetContentWrapper>
-		
+				}
 
-			 
+				<ContentContainer>{ContentArr}</ContentContainer>
+			</WidgetContentWrapper>
+
+
+
 		</>
 
 	)

@@ -36,7 +36,7 @@ const FileWrapper = styled.div`
 
 
 
-function FileWidget({ del_index, del_function, widget_data, update_data}) {
+function FileWidget({ del_index, del_function, widget_data, update_data, mode }) {
 
 	const { publicRuntimeConfig } = getConfig()
 	const { HOST_URL } = publicRuntimeConfig
@@ -53,11 +53,11 @@ function FileWidget({ del_index, del_function, widget_data, update_data}) {
 		}
 
 		return async () => {
-        
+
 			const payload = file_comp_state
-			const response = await axios.delete(`${HOST_URL}/api/cleanUp`, {data: payload})
+			const response = await axios.delete(`${HOST_URL}/api/cleanUp`, { data: payload })
 			console.log("response after deleted", response)
-		    }
+		}
 	}, [file_comp_state])
 
 
@@ -86,10 +86,17 @@ function FileWidget({ del_index, del_function, widget_data, update_data}) {
 		!file_comp_state.file_link ? "loading" :
 
 			<>
-				<StyledDeleteBtn onClick={(e) => del_function(del_index)}></StyledDeleteBtn>
-				<FileWrapper>
-					<div onClick={onFileClick}>{file_comp_state.file_org_name}</div>
-				</FileWrapper>
+				{mode == "write" ?
+					<>
+						<StyledDeleteBtn onClick={(e) => del_function(del_index)}></StyledDeleteBtn>
+						<FileWrapper>
+							<div onClick={onFileClick}>{file_comp_state.file_org_name}</div>
+						</FileWrapper>
+					</> :
+					<FileWrapper>
+						<div onClick={onFileClick}>{file_comp_state.file_org_name}</div>
+					</FileWrapper>}
+
 			</>
 
 

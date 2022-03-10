@@ -38,11 +38,17 @@ display: flex;
 
 `
 
+const TextDisplayContainer = styled.div`
+  width: 100%;
+  height: fit-content;
+  background-color: papayawhip;
+`
 
 
 
 
-function TextWidget({del_index, del_function, widget_data, update_data}) {
+
+function TextWidget({del_index, del_function, widget_data, update_data, mode}) {
   const [TextCompData, setTextCompData] = useState(widget_data)
 
   
@@ -70,8 +76,18 @@ function TextWidget({del_index, del_function, widget_data, update_data}) {
     
   return (
     <StyledWrapper>
-      <StyledDeleteBtn onClick={(e) => del_function(del_index)}></StyledDeleteBtn>
-      <SyltedInput placeholder='enter text content' type='text' value={TextCompData.text_content} onChange={onTextChange}></SyltedInput>
+      
+      {
+        mode == "write" ?
+          <>
+            <StyledDeleteBtn onClick={(e) => del_function(del_index)}></StyledDeleteBtn>
+            <SyltedInput placeholder='enter text content' type='text' value={TextCompData.text_content} onChange={onTextChange}></SyltedInput>
+          </> 
+          :
+          <TextDisplayContainer >
+              {TextCompData.text_content}
+          </TextDisplayContainer>
+      }
     </StyledWrapper>
    
   )
