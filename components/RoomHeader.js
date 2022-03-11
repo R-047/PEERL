@@ -24,7 +24,7 @@ const StyledHeader = styled.header`
     padding-right: 20px;
     padding-top: 10px;
     padding-bottom: 10px;
-    border-bottom: 1px solid rgb(58, 56, 56)
+    border-bottom: 1px solid rgb(58, 56, 56);
  
 `
 
@@ -34,19 +34,80 @@ const RoomLogoWrapper = styled.div`
 	position: relative;
 `
 
+const RoomName = styled.div`
+  
+`
+
+const  RoomContextHeading = styled.div`
+
+`
+
+const RoomSettingsBtn = styled.button`
+
+`
+
+const RoomInfoBtn = styled.button`
+
+`
+
+const RoomNotificationBtn = styled.button`
+
+`
+
+const SearchInput = styled.input`
+
+`
+
+
+const LogoNameWrapper = styled.div`
+  display:  flex;
+  flex-direction: row;
+  border-right: 1px solid black;
+`
+
+const RoomContextWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`
+
+const BtnsWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`
 
 
 
 
 
-function roomHeader() {
+
+
+function RoomHeader({room_info, room_context}) {
+  console.log("🚀 ~ file: RoomHeader.js ~ line 43 ~ RoomHeader ~ room_info", room_info)
   return (
     
       <StyledHeader>
         
-          <RoomLogoWrapper>
-            <Image src="/PeerlLogo2.svg"  alt="PEERL Logo" layout='fill' quality="100"></Image>
-          </RoomLogoWrapper>
+          <RoomContextWrapper>
+            <LogoNameWrapper>
+              <RoomLogoWrapper>
+                <Image src={room_info.room_image_link || "/PeerlLogo2.svg"}  alt="PEERL Logo" layout='fill' quality="100"></Image>
+              </RoomLogoWrapper>
+              <RoomName>
+                {room_info.room_name}
+              </RoomName>
+            </LogoNameWrapper>
+            <RoomContextHeading >
+              {room_context}
+            </RoomContextHeading>
+          </RoomContextWrapper>
+          <SearchInput />
+          <BtnsWrapper>
+            <RoomSettingsBtn>settings</RoomSettingsBtn>
+            <RoomInfoBtn>about</RoomInfoBtn>
+            <RoomNotificationBtn>notifications</RoomNotificationBtn>
+          </BtnsWrapper>
+          
         
       </StyledHeader>
 
@@ -54,4 +115,4 @@ function roomHeader() {
   )
 }
 
-export default roomHeader
+export default RoomHeader

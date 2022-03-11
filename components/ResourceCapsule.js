@@ -28,7 +28,7 @@ const ResourceTag = styled.div`
 
 `
 
-const 
+
 
 
 function ResourceCapsule() {

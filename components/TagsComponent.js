@@ -108,7 +108,7 @@ function TagsComponent({ mode, tagsArrUpdate, tags }) {
 
 
 	const generateInputTag = tagsArr.map((ele, index) => {
-		console.log(ele.value.length)
+		
 		return (
 			<TagDelWrapper key={ele.id} bg_color={ele.bg_color}>
 				{

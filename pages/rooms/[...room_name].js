@@ -41,7 +41,7 @@ function room({ room_info }) {
         <link rel="icon" href="/peerllogo.svg" />
         <title>PEERL</title>
       </Head>
-      <RoomHeader />
+      <RoomHeader room_info={room_info} room_context={room_name[1]}/>
       <div className={styles.body_flex_wrapper}>
         {room_name[1] == 'resources' && <Resources_Comp openModal={openModal} room_id={room_id} />}
         {room_name[1] == 'qna' && <Qna_Comp />}
