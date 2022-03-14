@@ -3,6 +3,7 @@ import styles from '../styles/HomePage.module.css'
 import Image from 'next/image'
 import { CSSTransition } from 'react-transition-group'
 import { getSession } from 'next-auth/react'
+import SearchComp from './SearchComp'
 
 function CommonHeader() {
 	
@@ -39,7 +40,8 @@ function CommonHeader() {
 				<p className={styles.context_header}>peer group</p>
 			</div>
 			<div className={styles.btns_container}>
-				<button className={styles.search_button}></button>
+				<SearchComp />
+				{/* <button className={styles.search_button}></button> */}
 				<button className={styles.notification_button}></button>
 				<button className={styles.settings_btn}></button>
 				<div className={styles.user_capsule}>
