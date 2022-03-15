@@ -1,3 +1,4 @@
+
 .container {
   padding: 0 2rem;
 }
@@ -206,13 +207,15 @@
   top: 100px;
   right: -600px;
   animation: mymove 60s linear infinite;
+  /* z-index: -1; */
 }
 
 .circle_2{
   position: absolute;
   top: 200px;
-  left: -600px;
+  left: -500px;
   animation: mymove_reverse 90s linear infinite;
+  /* z-index: -1; */
 }
 
 
@@ -221,6 +224,7 @@
   top: 200px;
   left: 0px;
   animation: mymove 10s linear infinite;
+  /* z-index: -1; */
 }
 
 .plane_1{
@@ -332,4 +336,88 @@
     width: 100%;
     flex-direction: column;
   }
+}
+
+
+.second_main_div {
+  height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  z-index: 3;
+}
+
+.third_main_div {
+  height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  z-index: 3;
+}
+
+.third_left_section{
+  font-family: cartoon-fun; 
+  width: 50%;
+  /* background-color: #FF954C; */
+  margin-left: 100px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  margin-top: -100px;
+}
+.left_section{
+  width: 50%;
+  /* background-color: #FF954C; */
+  margin-left: 50px;
+  
+}
+.right_section{
+  font-family: cartoon-fun; 
+  width: 50%;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  align-content: center;
+  flex-direction: column;
+}
+.third_right_section{
+  width: 50%;
+  /* background-color: #FF954C; */
+  margin-left: 50px;
+}
+
+.lightpara{
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;;
+  width: 85%;
+  padding-top: 20px;
+
+  letter-spacing: normal;
+}
+.secondsectionimage{
+  position: relative;
+  background-repeat: no-repeat;
+  height: 35px;
+  width: 35px;
+  margin-bottom: -10px;
+}
+.thirdsectionimage{
+  position: relative;
+  background-repeat: no-repeat;
+  height: 35px;
+  width: 35px;
+  margin-bottom: -10px;
+}
+
+.section2topheading{
+  display: flex;
+  flex-direction: row;
+}
+
+.section3topheading{
+  display: flex;
+  flex-direction: row;
+}
+
+.firstdivsection{
+  height: 100vh;
 }

@@ -10,6 +10,7 @@ Modal.setAppElement('#__next')
 
 const SearchInput = styled.input`
 	width: 100%;
+	
 `
 
 
@@ -82,7 +83,7 @@ function SearchComp() {
 	return (
 		<SearchWrapper>
 			<SearchInputIconWrapper>
-				<SearchInput onChange={onType} value={query} onBlur={onFocusLost} />
+				<SearchInput onChange={onType} value={query} onBlur={onFocusLost} placeholder="Search here"/>
 				<SearchIcon />
 					
 			</SearchInputIconWrapper>

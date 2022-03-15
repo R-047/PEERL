@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import LinkWidget from './widgets/LinkWidget'
 import TextWidget from './widgets/TextWidget'
 import ImageWidget from './widgets/ImageWidget'

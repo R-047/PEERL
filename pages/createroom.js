@@ -1,19 +1,34 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import getConfig from 'next/config'
 import axios from 'axios'
 import room from './rooms/[...room_name]'
 import { Router, useRouter } from 'next/router'
+import styled from 'styled-components'
 
 
 
+const StyledForm = styled.form`
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ align-content: center;
+ justify-content: space-between;
+`
+
+const labelinputwrapper = styled.div`
+
+`
+const alllabelstyler = styled.label`
+
+`
 
 // create form...inputs: room_name, room_desc, room_status(public or private), room_image, room_dp and submit to an API api/createroom and  save to S3 and DB
 
 function createroom() {
   const router = useRouter()
 
-  const {publicRuntimeConfig} = getConfig()
-  const {HOST_URL} = publicRuntimeConfig
+  const { publicRuntimeConfig } = getConfig()
+  const { HOST_URL } = publicRuntimeConfig
 
   const init_state = {
     room_name: "",
@@ -43,7 +58,7 @@ function createroom() {
     })
   }
 
-  const onRoomStatusChange = (e) =>{
+  const onRoomStatusChange = (e) => {
     setFormState((prev_state) => {
       return {
         ...prev_state,
@@ -54,27 +69,27 @@ function createroom() {
 
   const onRoomsDpChange = (e) => {
     const in_file = e.target.files[0]
-    if(in_file){
-      
+    if (in_file) {
+
       const reader = new FileReader();
-      reader.addEventListener("load", function() {
+      reader.addEventListener("load", function () {
         setFormState((prev_value) => {
-          return {...prev_value, room_dp: in_file}
+          return { ...prev_value, room_dp: in_file }
         })
       })
       reader.readAsDataURL(in_file)
-    } 
+    }
 
   }
 
   const onRoomsPictureChange = (e) => {
     const in_file = e.target.files[0]
-    if(in_file){
-      
+    if (in_file) {
+
       const reader = new FileReader();
-      reader.addEventListener("load", function() {
+      reader.addEventListener("load", function () {
         setFormState((prev_value) => {
-          return {...prev_value, room_image: in_file}
+          return { ...prev_value, room_image: in_file }
         })
       })
       reader.readAsDataURL(in_file)
@@ -83,10 +98,10 @@ function createroom() {
 
 
   const onSubmitClick = async (e) => {
-    
+
     e.preventDefault()
     console.log(form_State)
-    const formData =  new FormData();
+    const formData = new FormData();
     formData.append("room_name", form_State.room_name)
     formData.append("room_desc", form_State.room_desc)
     formData.append("room_status", form_State.room_Status)
@@ -94,16 +109,16 @@ function createroom() {
     // formData.append("room_image", undefined)
     // formData.append("room_dp", undefined)
 
-    if(form_State.room_image){
+    if (form_State.room_image) {
       formData.append("room_image", form_State.room_image)
     }
 
-    if(form_State.room_dp){
+    if (form_State.room_dp) {
       formData.append("room_dp", form_State.room_dp)
     }
 
 
-    
+
     console.log(formData.get("room_name"), formData.get("room_desc"), formData.get("room_status"))
     const response = await axios.post(`${HOST_URL}/api/createroom`, formData)
     //get room_id and room_name
@@ -114,29 +129,30 @@ function createroom() {
       pathname: `/rooms/${room_name}/resources`,
       query: { room_id: room_id }
     })
-    
-    
+
+
 
   }
 
 
   const form_ele = (
-    <form>
-      <label>room name</label>
-          <input type='text' onChange={onRoomNameChange} value={form_State.room_name}></input>
+    <StyledForm>
+        <label>room name</label>
+        <input type='text' onChange={onRoomNameChange} value={form_State.room_name}></input>
         <label>room description</label>
-          <textarea value={form_State.room_desc} onChange={onRoomDescChange}></textarea>
-          <label>room status</label>
-          <input type='checkbox' onChange={onRoomStatusChange} checked={form_State.room_Status}></input>
-          <label>room dp</label>
-          <input type='file' onChange={onRoomsDpChange}></input>
-          <label>room image</label>
-          <input type='file' onChange={onRoomsPictureChange}></input>
-          <button type='submit' onClick={onSubmitClick}>create room</button>
-        </form>
+        <textarea value={form_State.room_desc} onChange={onRoomDescChange}></textarea>
+        <label>room status</label>
+        <input type='checkbox' onChange={onRoomStatusChange} checked={form_State.room_Status}></input>
+        <label>room dp</label>
+        <input type='file' onChange={onRoomsDpChange}></input>
+        <label>room image</label>
+        <input type='file' onChange={onRoomsPictureChange}></input>
+        <button type='submit' onClick={onSubmitClick}>create room</button>
+    </StyledForm>
+        
   )
 
-  
+
   return form_ele
 }
 
