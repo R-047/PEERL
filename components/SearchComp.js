@@ -12,15 +12,31 @@ Modal.setAppElement('#__next')
 
 const SearchInput = styled.input`
 	width: 100%;
-	
+	border-radius: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 5px;
+	/* opacity: 0; */
+	background: transparent;
+	border: none;
+	outline: none;
 `
 
 
 
+
+
 const SearchResultPanel = styled.div`
-	width: 100%;
+	width: 160%;
+	margin-left: -200px;
 	height: 200px;
-	background-color: blue;
+	background-color: #dae3f5;
+
+	border: 2px solid black;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
 	position: absolute;
 	display: ${props => props.searchPanelState ? "block" : "none"};
 
@@ -52,11 +68,20 @@ const SearchIcon = styled.div`
  background-repeat: no-repeat;
  background-size: contain;
 background-position: center;
+margin-top: 3px;
 `
 
 const SearchInputIconWrapper = styled.div`
 	display: flex;
 	flex-direction: row;
+	border: 2px solid grey;
+	border-radius: 10px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 10px;
+	padding-right: 15px;
+	margin-left: -200px;
+	width: 160%;
 `
 
 
@@ -89,7 +114,7 @@ function SearchComp() {
 	return (
 		<SearchWrapper>
 			<SearchInputIconWrapper>
-				<SearchInput onChange={onType} value={query} onBlur={onFocusLost} placeholder="Search here"/>
+				<SearchInput onChange={onType} value={query} onBlur={onFocusLost} placeholder="Search here"></SearchInput>
 				<SearchIcon />
 					
 			</SearchInputIconWrapper>
