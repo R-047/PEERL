@@ -364,8 +364,27 @@
     height: 100px;
     border: 1px solid rgba(207, 217, 235, 0.945);
     border-radius: 20px;
+    text-align: center;
     /* border-radius: 10px; */
     /* box-sizing: border-box; */
+}
+
+.activity_rect p{
+    font-size: 18px;
+    font-weight: 700;
+    color: black;
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+}
+
+.activity_rect span p{
+    font-size: 14px;
+    font-weight: 500;
+    color: rgb(192, 175, 175);
+    margin-top: 10px;
+    text-align: center;
+    padding: 2px;
 }
 
 .activity_rect:hover{
@@ -424,12 +443,19 @@
 /* rooms component styles #############################################################*/
 
 .create_room_div{
-    border: 5px solid red;
+    border: 2px solid #dde1e7;
     width: 300px;
     border-radius: 20px;
     margin-top: 10px;
     margin-bottom: 10px;
     min-height: 300px;
+}
+
+.rooms_inner_container{
+    display: flex;
+    height: 50%;
+    justify-content: space-evenly;
+    flex-direction: column;
 }
 
 
