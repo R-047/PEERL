@@ -3,6 +3,8 @@ import styled from "styled-components"
 import Modal from 'react-modal'
 import { set } from 'mongoose'
 import searchic from '../public/HomePageContents/searchsearch_ic.svg'
+import axios from 'axios'
+import getConfig from 'next/config'
 
 
 Modal.setAppElement('#__next')
@@ -62,15 +64,19 @@ const SearchInputIconWrapper = styled.div`
 function SearchComp() {
 	const [searchPanelState, setsearchPanelState] = useState(false)
 	const [query, setquery] = useState("")
+	const { publicRuntimeConfig } = getConfig()
+	const { HOST_URL } = publicRuntimeConfig
 
 
-	const onType = (e) => {
+	const onType = async (e) => {
 
 		setquery(e.target.value)
 		if (e.target.value == "") {
 			setsearchPanelState(false)
 		} else {
 			setsearchPanelState(true)
+			const result = await axios.get(`${HOST_URL}/api/search?q=${query}`)
+			console.log(result)
 		}
 
 	}

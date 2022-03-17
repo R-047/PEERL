@@ -10,7 +10,7 @@ import getConfig from 'next/config'
 import axios from 'axios'
 import { getSession } from "next-auth/react"
 import TagsComponent from './TagsComponent'
-
+import React, {useState, useEffect} from 'react'
 
 
 const WidgetContainer = styled.div`
