@@ -216,8 +216,8 @@ const rooms_comp_jsx = (
         <p>want to build a new peer group to teach and learn something new...?</p>
 
         <div className={styles.rooms_inner_container}>
-          <button onClick={onCreateClick}>Create room</button>
           <Image src="/Hero/plus.png" alt="" width={50} height={50}></Image>
+          <button onClick={onCreateClick}>Create room</button>
         </div>
       </div>
       {users_rooms_comp}
