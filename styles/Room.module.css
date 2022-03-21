@@ -272,6 +272,7 @@
 	align-items: center;
 	justify-content: flex-start;
 	padding-bottom: 150px;  
+	align-content: center;
     }
     
     .activities_container{
@@ -301,6 +302,14 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-start;
+    }
+
+    .collapsible_container{
+	    width: 90%;
+	    padding: 50px;
+	    background-color: #F0F0E5;
+	    box-sizing: border-box;
+	    margin: 10px;
     }
     
     
@@ -426,8 +435,9 @@
     
 	.rooms_container{
 	    width: 100%;
-	    flex-direction: row;
+	    flex-direction: column;
 	    flex-wrap: wrap;
+	    gap: 30px;
 	    
 	}
     

@@ -2,14 +2,14 @@ import React, { useRef, useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth'
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/userprofile.module.css'
+import styles from '../styles/UserProfile.module.css'
 import {listObj} from '../lib/s3client'
 import axios from 'axios';
 import clientPromise, {ObjectId} from '../lib/mongodb'
 import { getSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
-function userprofile({avtrs, host, user_image, user_name}) {
+function UserProfile({avtrs, host, user_image, user_name}) {
 
   const router = useRouter()
   const form_init_state = {
@@ -115,7 +115,7 @@ function userprofile({avtrs, host, user_image, user_name}) {
       </nav>
       <div className={styles.body_wrapper}>
         <div className={styles.content_wrapper}>
-          <h1 className={styles.context_heading}>Let's personalize your account</h1>
+          <h1 className={styles.context_heading}>Let&apos;s personalize your account</h1>
 
           <form className={styles.form_style}>
             <div className={styles.pics_container}>
@@ -161,7 +161,7 @@ function userprofile({avtrs, host, user_image, user_name}) {
   return useAuth(ele);
 }
 
-export default userprofile;
+export default UserProfile;
 
 export async function getServerSideProps(context) {
 

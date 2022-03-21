@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from "styled-components"
-import Modal from 'react-modal'
-import { set } from 'mongoose'
 import searchic from '../public/HomePageContents/searchsearch_ic.svg'
 import axios from 'axios'
 import getConfig from 'next/config'
+import Link from 'next/link'
 
 
-Modal.setAppElement('#__next')
+
+const { publicRuntimeConfig } = getConfig()
+const { HOST_URL } = publicRuntimeConfig
 
 
 const SearchInput = styled.input`
@@ -49,17 +50,8 @@ const SearchWrapper = styled.div`
 	width: 300px;
 `
 
-const ResourceResultItem = styled.div`
 
-`
 
-const UserResultItem = styled.div`
-
-`
-
-const RoomResultItem = styled.div`
-
-`
 
 const SearchIcon = styled.div`
  width: 30px;
@@ -80,8 +72,18 @@ const SearchInputIconWrapper = styled.div`
 	padding-bottom: 2px;
 	padding-left: 10px;
 	padding-right: 15px;
-	margin-left: -200px;
-	width: 160%;
+	/* margin-left: -200px; */
+	width: 100%;
+`
+
+
+const TogglesearchResultButton = styled.button`
+
+`
+
+const ToggleBtnsWrapper = styled.div`
+ display: flex;
+ flex-direction: row;
 `
 
 
@@ -89,8 +91,9 @@ const SearchInputIconWrapper = styled.div`
 function SearchComp() {
 	const [searchPanelState, setsearchPanelState] = useState(false)
 	const [query, setquery] = useState("")
-	const { publicRuntimeConfig } = getConfig()
-	const { HOST_URL } = publicRuntimeConfig
+	const [SearchPanelState, setSearchPanelState] = useState("rooms")
+
+
 
 
 	const onType = async (e) => {
@@ -100,25 +103,43 @@ function SearchComp() {
 			setsearchPanelState(false)
 		} else {
 			setsearchPanelState(true)
-			const result = await axios.get(`${HOST_URL}/api/search?q=${query}`)
-			console.log(result)
 		}
 
 	}
 
 	const onFocusLost = (e) => {
-		setsearchPanelState(false)
-		setquery("")
+		if (!e.currentTarget.contains(e.relatedTarget)) {
+			setsearchPanelState(false)
+			setquery("")
+			setSearchPanelState("rooms")
+		}
+
+	}
+
+	const onRoomsResultClick = (e) => {
+		setSearchPanelState("rooms")
+	}
+
+	const onUsersResultClick = (e) => {
+		setSearchPanelState("users")
 	}
 
 	return (
-		<SearchWrapper>
-			<SearchInputIconWrapper>
-				<SearchInput onChange={onType} value={query} onBlur={onFocusLost} placeholder="Search here"></SearchInput>
+		<SearchWrapper onBlur={onFocusLost}>
+			<SearchInputIconWrapper >
+				<SearchInput onChange={onType} value={query} placeholder="Search here"></SearchInput>
 				<SearchIcon />
-					
+
 			</SearchInputIconWrapper>
 			<SearchResultPanel searchPanelState={searchPanelState}>
+				<ToggleBtnsWrapper>
+					<TogglesearchResultButton onClick={onRoomsResultClick}>Rooms</TogglesearchResultButton>
+					<TogglesearchResultButton onClick={onUsersResultClick}>Users</TogglesearchResultButton>
+				</ToggleBtnsWrapper>
+				<SearchResultContainer>
+					{SearchPanelState == "rooms" && <RoomSearchResultContainer search_query={query} />}
+					{SearchPanelState == "users" && <UserSearchResultContainer search_query={query} />}
+				</SearchResultContainer>
 				search result panel
 			</SearchResultPanel>
 
@@ -127,3 +148,79 @@ function SearchComp() {
 }
 
 export default SearchComp
+
+
+
+
+
+const SearchResultContainer = styled.div`
+
+`
+
+const RoomResultItem = styled.div`
+
+`
+
+
+
+
+function RoomSearchResultContainer({ search_query }) {
+
+	const [SearchResultArr, setSearchResultArr] = useState([])
+
+	useEffect(() => {
+		async function fetchData() {
+			if (search_query != '') {
+				const result = await axios.get(`${HOST_URL}/api/search?q=${search_query}&type=rooms`)
+				console.log(result)
+			}
+		}
+		fetchData();
+
+
+	}, [search_query])
+
+	return (
+		<div>
+			<SearchResultContainer >
+				Room search results
+			</SearchResultContainer>
+
+		</div>
+	)
+}
+
+
+
+
+const UserResultItem = styled.div`
+
+`
+
+function UserSearchResultContainer({ search_query }) {
+	const [SearchResultArr, setSearchResultArr] = useState([])
+
+	useEffect(() => {
+		async function fetchData() {
+			if (search_query != '') {
+				const result = await axios.get(`${HOST_URL}/api/search?q=${search_query}&type=users`)
+				console.log(result)
+			}
+		}
+		fetchData();
+
+	}, [search_query])
+	return (
+		<div>
+			<SearchResultContainer>
+				Users search results
+			</SearchResultContainer>
+
+		</div>
+	)
+}
+
+
+
+
+

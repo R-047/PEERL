@@ -11,10 +11,11 @@ apiRoute.use(upload.fields([{
       }]));
 
 apiRoute.post(async (req, res) => {
+	
 	const session = await getSession({ req })
 	const id = session.id
 
-	console.log(req.files, Object.keys(req.files).length )
+	
 	const room_image = Object.keys(req.files).length ? req.files.room_image[0] : undefined
 	const room_dp = Object.keys(req.files).length ? req.files.room_dp[0] : undefined
 	
@@ -28,7 +29,9 @@ apiRoute.post(async (req, res) => {
 	creation_date: new Date(Date.now()),
 	room_image_link: undefined,
 	room_dp_link: undefined,
+	tags_arr: JSON.parse(req.body.tags_arr)
 	}
+	
 
 
 	if(room_image){
@@ -43,7 +46,6 @@ apiRoute.post(async (req, res) => {
 	}
 
 	const new_room_info = await createRoom(room)
-
 	res.json({ message: 'success', data: new_room_info });
 
 	

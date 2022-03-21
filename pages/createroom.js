@@ -4,6 +4,7 @@ import axios from 'axios'
 import room from './rooms/[...room_name]'
 import { Router, useRouter } from 'next/router'
 import styled from 'styled-components'
+import TagsComponent from '../components/TagsComponent'
 
 
 
@@ -22,9 +23,9 @@ const alllabelstyler = styled.label`
 
 `
 
-// create form...inputs: room_name, room_desc, room_status(public or private), room_image, room_dp and submit to an API api/createroom and  save to S3 and DB
+// create form...inputs: room_name, room_desc, room_status(public or private), room_image, room_dp and submit to an API api/CreateRoom and  save to S3 and DB
 
-function createroom() {
+function CreateRoom() {
   const router = useRouter()
 
   const { publicRuntimeConfig } = getConfig()
@@ -36,6 +37,7 @@ function createroom() {
     room_Status: false,
     room_image: "./empty_face.svg",
     room_dp: "./empty_face.svg",
+    tags: []
 
   }
   const [form_State, setFormState] = useState(init_state)
@@ -96,6 +98,15 @@ function createroom() {
     }
   }
 
+  const onTagsUpdate = (tags_arr) => {
+		setFormState((prev_value) => {
+			return {
+				...prev_value,
+				tags: tags_arr
+			}
+		})
+	} 
+
 
   const onSubmitClick = async (e) => {
 
@@ -105,9 +116,9 @@ function createroom() {
     formData.append("room_name", form_State.room_name)
     formData.append("room_desc", form_State.room_desc)
     formData.append("room_status", form_State.room_Status)
-
-    // formData.append("room_image", undefined)
-    // formData.append("room_dp", undefined)
+    formData.append("tags_arr", JSON.stringify(form_State.tags))
+    
+    
 
     if (form_State.room_image) {
       formData.append("room_image", form_State.room_image)
@@ -147,6 +158,7 @@ function createroom() {
         <input type='file' onChange={onRoomsDpChange}></input>
         <label>room image</label>
         <input type='file' onChange={onRoomsPictureChange}></input>
+        <TagsComponent mode="write" tagsArrUpdate={onTagsUpdate} tags={form_State.tags}/>
         <button type='submit' onClick={onSubmitClick}>create room</button>
     </StyledForm>
         
@@ -156,4 +168,4 @@ function createroom() {
   return form_ele
 }
 
-export default createroom
+export default CreateRoom

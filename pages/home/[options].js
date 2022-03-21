@@ -16,7 +16,7 @@ import RoomBox from '../../components/RoomBox'
 const { publicRuntimeConfig } = getConfig()
 const { HOST_URL } = publicRuntimeConfig
 
-function homepage() {
+function HomePage() {
 const router = useRouter()
 console.log(router.query.options)
 const context = router.query.options
@@ -29,7 +29,7 @@ const comp = (
     <link rel="icon" href="/peerllogo.svg" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-      crossorigin="anonymous" referrerpolicy="no-referrer" />
+      crossOrigin="anonymous" referrerpolicy="no-referrer" />
     <title>PEERL</title>
   </Head>
   {/* <button onClick={(e)=> signOut({ callbackUrl: 'http://localhost:3000/' })}>sign out</button> */}
@@ -80,7 +80,7 @@ return useAuth(comp)
 // return comp
 }
 
-export default homepage;
+export default HomePage;
 
 
 
@@ -125,12 +125,12 @@ const peergroup_comp_jsx = (
         </div>
         <div className={styles.room_numbers}>
           <div className={styles.room_numbers_g1}>
-            <i class="fa-solid fa-thumbs-up"></i>
+            <i className="fa-solid fa-thumbs-up"></i>
             &nbsp;&nbsp;
             <span>110</span>
           </div>
           <div className={styles.room_numbers_g2}>
-            <i class="fa-brands fa-rocketchat"></i>
+            <i className="fa-brands fa-rocketchat"></i>
             &nbsp;&nbsp;
             <span>23</span>
           </div>
@@ -156,12 +156,13 @@ const router = useRouter()
 const init_state = []
 const [your_rooms_state, setyour_rooms_state] = useState(init_state)
 
-useEffect(async () => {
-//get personal rooms
-// rooms where room_owner_id = user_id
-const response = await axios.get(`${HOST_URL}/api/getUsersRooms`)
+useEffect(() => {
+  async function fetchData() {
+    const response = await axios.get(`${HOST_URL}/api/getUsersRooms`)
+    setyour_rooms_state(response.data.result)
+  }
+  fetchData();
 
-setyour_rooms_state(response.data.result)
 
 }, [])
 

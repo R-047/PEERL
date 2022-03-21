@@ -11,7 +11,10 @@ export default async function handler(req, res) {
 	const resource_meta_data = {
 		...req.body.resources_obj.resource_meta_data,
 		user_id: new ObjectId(id),
-		room_id:new ObjectId(req.body.resources_obj.resource_meta_data.room_id)
+		room_id:new ObjectId(req.body.resources_obj.resource_meta_data.room_id),
+		appreciation_count: 0,
+		appreciated_members: [],
+		creation_date: new Date(Date.now()),
 	}
 	const resources_arr = req.body.resources_obj.resources
 
