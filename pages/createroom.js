@@ -13,6 +13,14 @@ const StyledForm = styled.form`
  align-items: center;
  align-content: center;
  justify-content: space-between;
+ width:430px;
+  height: 700px;
+  padding: 60px 35px 35px 35px;
+  border-radius: 40px;
+  background: #ecf0f3;
+  box-shadow: 13px 13px 20px #cbced1,
+              -13px -13px 20px #ffffff;
+ 
 `
 
 const labelinputwrapper = styled.div`
@@ -137,6 +145,7 @@ function createroom() {
 
   const form_ele = (
     <StyledForm>
+      <div className={styles.fields}>
         <label>room name</label>
         <input type='text' onChange={onRoomNameChange} value={form_State.room_name}></input>
         <label>room description</label>
@@ -147,9 +156,13 @@ function createroom() {
         <input type='file' onChange={onRoomsDpChange}></input>
         <label>room image</label>
         <input type='file' onChange={onRoomsPictureChange}></input>
-        <button type='submit' onClick={onSubmitClick}>create room</button>
+        <button type='submit' onClick={onSubmitClick} className={styles.signin_button}>create room</button>
+        <div className={styles.signin_button}>
+          <a href="#">Forgot password?</a> or <a href="#">Sign up</a>
+        </div>
+      </div>
     </StyledForm>
-        
+
   )
 
 
