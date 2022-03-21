@@ -19,11 +19,15 @@ function CommonHeader() {
 		image: "/empty_face.svg"
 	})
 
-	useEffect(async () => {
-	  const user_info = await getSession()
-	  setuserinfo({
+	useEffect(() => {
+	async function fetchData() {
+		const user_info = await getSession()
+	  	setuserinfo({
 		  ...user_info.user
 	  })
+	}
+	fetchData();	
+	  
 	}, [])
 	
 

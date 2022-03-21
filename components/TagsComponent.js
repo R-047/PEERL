@@ -6,11 +6,12 @@ import randomColor from 'randomcolor'
 const TagsContainer = styled.div`
 	display: flex;
 	flex-direction: row;
-	border: 1px solid black;
-	width: 200px;
-	height: 100px;
+	width: ${props => props.mode == "read" ? 'fit-content': '200px'};
+	height: ${props => props.mode == "read" ? 'fit-content': '100px'};
 	flex-wrap: wrap;
 	overflow-x: auto;
+	gap: 10px;
+
 
 	
 `
@@ -56,7 +57,10 @@ function TagsComponent({ mode, tagsArrUpdate, tags }) {
 	const [tagsArr, settagsArr] = useState(tags || [])
 
 	useEffect(() => {
-		tagsArrUpdate(tagsArr)
+		if(tagsArrUpdate){
+			tagsArrUpdate(tagsArr)
+		}
+		
 	}, [tagsArr])
 
 
@@ -117,7 +121,7 @@ function TagsComponent({ mode, tagsArrUpdate, tags }) {
 					<TagInput autoFocus value={ele.value} onChange={(e) => updateTagValue(ele.id, e)} size={ele.value.length == 0 ? 1 : ele.value.length} tabIndex={1} type="text" bg_color={ele.bg_color} />
 					<DelBtn onClick={(e) => delTag(index)} />
 				</> :
-					<TagReadMode bg_color={ele.bg_color}>{ele.value}</TagReadMode>
+					<TagReadMode >{ele.value}</TagReadMode>
 				}
 			</TagDelWrapper>
 		)
@@ -129,10 +133,10 @@ function TagsComponent({ mode, tagsArrUpdate, tags }) {
 		<>
 			{
 				mode=="write" ?
-				<TagsContainer onClick={addTag}>
+				<TagsContainer mode={mode} onClick={addTag}>
 				{generateInputTag}
 				</TagsContainer> :
-				<TagsContainer >
+				<TagsContainer mode={mode}>
 				{generateInputTag}
 				</TagsContainer>
 			}

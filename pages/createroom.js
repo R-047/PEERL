@@ -7,6 +7,7 @@ import styled from 'styled-components'
 
 
 
+
 const StyledForm = styled.form`
  display: flex;
  flex-direction: column;
@@ -145,7 +146,7 @@ function createroom() {
 
   const form_ele = (
     <StyledForm>
-      <div className={styles.fields}>
+      <div >
         <label>room name</label>
         <input type='text' onChange={onRoomNameChange} value={form_State.room_name}></input>
         <label>room description</label>
@@ -157,7 +158,7 @@ function createroom() {
         <label>room image</label>
         <input type='file' onChange={onRoomsPictureChange}></input>
         <button type='submit' onClick={onSubmitClick} className={styles.signin_button}>create room</button>
-        <div className={styles.signin_button}>
+        <div>
           <a href="#">Forgot password?</a> or <a href="#">Sign up</a>
         </div>
       </div>

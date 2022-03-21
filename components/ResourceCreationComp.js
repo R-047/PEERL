@@ -10,7 +10,8 @@ import getConfig from 'next/config'
 import axios from 'axios'
 import { getSession } from "next-auth/react"
 import TagsComponent from './TagsComponent'
-
+import React, { useState, useEffect } from 'react'
+import AppreciationComp from './AppreciationComp'
 
 
 const WidgetContainer = styled.div`
@@ -34,7 +35,7 @@ const ContentContainer = styled.div`
 
 const WidgetContentWrapper = styled.div`
 	display: flex;
-	flex-direction: row;
+	flex-direction: ${props => props.mode == 'read' ? 'column' : 'row'};
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
@@ -51,23 +52,52 @@ const HeaderWrapper = styled.div`
 
 
 
-function ResourceCreationComp({ room_id, resource_obj, resource_cont_mode }) {
+function ResourceCreationComp({ room_id, resource_obj, resource_cont_mode, update_content_func }) {
 
 	const { publicRuntimeConfig } = getConfig()
 	const { HOST_URL } = publicRuntimeConfig
+	const [user_id, setuser_id] = useState("")
+
 
 
 
 	const [ResourceMetaData, setResourceMetaData] = useState({
+
+		resource_id: resource_obj ? resource_obj._id : undefined,
 		resource_client_id: resource_obj ? resource_obj.resource_client_id : `resource_${shortUUID().new()}`,
 		room_id: resource_obj ? resource_obj.room_id : room_id,
 		resource_title: resource_obj ? resource_obj.resource_title : "",
 		resource_description: resource_obj ? resource_obj.resource_description : "",
-		tags: resource_obj ? resource_obj.tags : []
+		tags: resource_obj ? resource_obj.tags : [],
+		appreciation_count: resource_obj ? resource_obj.appreciation_count : 0,
+		appreciated_members: resource_obj ? resource_obj.appreciated_members : []
 	})
+
+
 
 	const [Resource_data, setResource_data] = useState(resource_obj ? resource_obj.resources_arr : [])
 
+	useEffect(() => {
+		const getId = async () => {
+			const session = await getSession();
+			setuser_id(session.id)
+		}
+		getId()
+	}, [user_id])
+
+	useEffect(() => {
+		setResourceMetaData({
+			resource_id: resource_obj ? resource_obj._id : undefined,
+			resource_client_id: resource_obj ? resource_obj.resource_client_id : `resource_${shortUUID().new()}`,
+			room_id: resource_obj ? resource_obj.room_id : room_id,
+			resource_title: resource_obj ? resource_obj.resource_title : "",
+			resource_description: resource_obj ? resource_obj.resource_description : "",
+			tags: resource_obj ? resource_obj.tags : [],
+			appreciation_count: resource_obj ? resource_obj.appreciation_count : 0,
+			appreciated_members: resource_obj ? resource_obj.appreciated_members : []
+		})
+		setResource_data((resource_obj ? resource_obj.resources_arr : []))
+	}, [resource_obj])
 
 
 
@@ -138,7 +168,7 @@ function ResourceCreationComp({ room_id, resource_obj, resource_cont_mode }) {
 				tags: tags_arr
 			}
 		})
-	} 
+	}
 
 
 	const ContentArr = Resource_data.map((ele, index) => {
@@ -270,14 +300,17 @@ function ResourceCreationComp({ room_id, resource_obj, resource_cont_mode }) {
 		<>
 
 			<HeaderWrapper>
-				
-				{(resource_cont_mode == "write" || resource_cont_mode == "update") ? <input type="text" value={ResourceMetaData.resource_title} onChange={onHeadingChanged} placeholder="title"></input> : <h1>{ResourceMetaData.resource_title}</h1>}
-				{(resource_cont_mode == "write" || resource_cont_mode == "update") ? <input type="text" value={ResourceMetaData.resource_description} onChange={onDescriptionChanged} placeholder="description"></input> : <h1>{ResourceMetaData.resource_description}</h1>}
-				{(resource_cont_mode == "write" || resource_cont_mode == "update") ? <TagsComponent mode="write" tagsArrUpdate={onTagsUpdate} tags={ResourceMetaData.tags}/>: <TagsComponent mode="read" tagsArrUpdate={onTagsUpdate} tags={ResourceMetaData.tags}/>}
+
+				{(resource_cont_mode == "write" || resource_cont_mode == "update") ? <input type="text" value={ResourceMetaData.resource_title} onChange={onHeadingChanged} placeholder="title"></input> : undefined}
+				{(resource_cont_mode == "write" || resource_cont_mode == "update") ? <input type="text" value={ResourceMetaData.resource_description} onChange={onDescriptionChanged} placeholder="description"></input> : <div>
+					description
+					<p style={{"margin": '0px 0px 10px 0px'}}>{ResourceMetaData.resource_description}</p>
+				</div>}
+				{(resource_cont_mode == "write" || resource_cont_mode == "update") ? <TagsComponent mode="write" tagsArrUpdate={onTagsUpdate} tags={ResourceMetaData.tags} /> : undefined}
 				{resource_cont_mode == "write" && <button onClick={onSubmit}>submit</button>}
 				{resource_cont_mode == "update" && <button onClick={onUpdate}>update</button>}
 			</HeaderWrapper>
-			<WidgetContentWrapper>
+			<WidgetContentWrapper mode={resource_cont_mode}>
 
 				{
 					(resource_cont_mode == "write" || resource_cont_mode == "update") &&
@@ -292,6 +325,7 @@ function ResourceCreationComp({ room_id, resource_obj, resource_cont_mode }) {
 				}
 
 				<ContentContainer>{ContentArr}</ContentContainer>
+				{(resource_cont_mode == "read") ? <AppreciationComp appreciation_count={ResourceMetaData.appreciation_count} resource_id={ResourceMetaData.resource_id} appreciated={ResourceMetaData.appreciated_members.includes(user_id)} update_func={update_content_func} /> : undefined}
 			</WidgetContentWrapper>
 
 
