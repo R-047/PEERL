@@ -11,7 +11,7 @@ import GitHubProvider from "next-auth/providers/github";
 // https://next-auth.js.org/configuration/options
 export default NextAuth({
   adapter: MongoDBAdapter(clientPromise),
-  
+  secret: "xILWoCqahhQMFYur2l2lsXOWtcokC0E3",
 
   providers: [
 	EmailProvider({
