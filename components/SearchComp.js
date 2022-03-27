@@ -323,17 +323,19 @@ function UserSearchResultContainer({ search_query}) {
 			Users search results
 			{SearchResultArr.map(ele => {
 				return (
-					<UserResultItem>
-						<UserDpNameWrapper>
-							<UserDp>
-								<Image src={ele.image || '/empty_face.svg'} layout="fill"></Image>
-							</UserDp>
-							<UserName>
-								{ele.name}
-							</UserName>
-						</UserDpNameWrapper>
-						<p>total resources shared: {ele.total_res_shared}</p>
-					</UserResultItem>
+					<Link href={`${HOST_URL}/userdashboard?user_id=${ele._id}`} key={ele._id}>
+						<UserResultItem>
+							<UserDpNameWrapper>
+								<UserDp>
+									<Image src={ele.image || '/empty_face.svg'} layout="fill"></Image>
+								</UserDp>
+								<UserName>
+									{ele.name}
+								</UserName>
+							</UserDpNameWrapper>
+							<p>total resources shared: {ele.total_res_shared}</p>
+						</UserResultItem>
+					</Link>
 				)
 			})}
 

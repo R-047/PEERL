@@ -29,7 +29,7 @@ module.exports = withTM({
 
     config.plugins.push(new webpack.DefinePlugin(env));
 
-    
+
 
 
 
@@ -47,23 +47,25 @@ module.exports = withTM({
         /[\\/]node_modules[\\/]monaco-editor[\\/]/
       ];
     }
-    config.plugins.push(
-      new MonacoWebpackPlugin({
-        languages: [
-          "json",
-          "markdown",
-          "css",
-          "typescript",
-          "javascript",
-          "html",
-          "graphql",
-          "python",
-          "scss",
-          "yaml"
-        ],
-        filename: "static/[name].worker.js"
-      })
-    );
+    if (!isServer) {
+      config.plugins.push(
+        new MonacoWebpackPlugin({
+          languages: [
+            "json",
+            "markdown",
+            "css",
+            "typescript",
+            "javascript",
+            "html",
+            "graphql",
+            "python",
+            "scss",
+            "yaml"
+          ],
+          filename: "static/[name].worker.js"
+        })
+      );
+    }
 
 
     return config
@@ -74,5 +76,5 @@ module.exports = withTM({
     domains: [process.env.HOST_NAME, "192.168.1.103", "lh3.googleusercontent.com"],
     formats: ["image/webp"],
   },
-  
+
 });
