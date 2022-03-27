@@ -105,7 +105,7 @@ function Room({ room_info }) {
           className={styles.RCModalStyles}
           overlayClassName={styles.RCModalOverlayStyles}
         >
-          <ResourceCreationComp room_id={room_info._id} resource_cont_mode="write" />
+          <ResourceCreationComp room_id={room_info._id} resource_cont_mode="write" modal_func={openModal}/>
         </Modal>
 
       </div>
@@ -169,13 +169,20 @@ function Resources_Comp(props) {
 
   const onNewResourceAdded = () => {
     //re-fetch the resources
+    async function refetchData() {
+      const response = await axios.get(`${HOST_URL}/api/getRoomResources?room_id=${props.room_id}`)
+      setresourceState(response.data)
+    }
+    refetchData();
+    
+    
   }
 
   const ResourcesItemsArr = resourceState.map(ele => {
     console.log("🚀 ~ file: [...room_name].js ~ line 119 ~ Resources_Comp ~ ele", ele)
 
     const tigger_ele = (
-      <ResourceCapsule user_id={ele.user_id} time={ele.creation_date} title={ele.resource_title} resource_ratings={ele.appreciation_count} tags={ele.tags} />
+      <ResourceCapsule user_id={ele.user_id} time={ele.creation_date} title={ele.resource_title} resource_ratings={ele.appreciation_count} tags={ele.tags} res_id={ele._id} />
     )
     return (
       <Collapsible className={styles.collapsible_container} openedClassName={styles.collapsible_container} key={ele._id} trigger={tigger_ele}>

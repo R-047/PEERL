@@ -70,7 +70,7 @@ const ResourceRect = styled.div`
 
 
 
-function ResourceCapsule({user_id, time, title, resource_ratings, tags}) {
+function ResourceCapsule({user_id, time, title, resource_ratings, tags, res_id}) {
   const [userInfoState, setuserInfoState] = useState({
     user_name: "",
     user_img: "/empty_face.svg"
@@ -88,7 +88,7 @@ function ResourceCapsule({user_id, time, title, resource_ratings, tags}) {
   }, [])
   
   return (
-    <ResourceCapsuleWrapper>
+    <ResourceCapsuleWrapper id={res_id}>
       <ResourceCapsuleHeader>
         <UserInfoWrapper>
           <UserDp>

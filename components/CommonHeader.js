@@ -44,7 +44,7 @@ function CommonHeader() {
 				<p className={styles.context_header}>peer group</p>
 			</div>
 			<div className={styles.btns_container}>
-				<SearchComp />
+				<SearchComp mode="general"/>
 				{/* <button className={styles.search_button}></button> */}
 				<button className={styles.notification_button}></button>
 				<button className={styles.settings_btn}></button>
