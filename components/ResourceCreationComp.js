@@ -155,7 +155,7 @@ function ResourceCreationComp({ room_id, resource_obj, resource_cont_mode, updat
 		console.log("🚀 ~ file: ResourceCreationComp.js ~ line 114 ~ onSubmit ~ resources_obj", resources_obj)
 		const response = await axios.post(`${HOST_URL}/api/uploadresource`, { resources_obj })
 		console.log(response)
-		// new_res_add_func()
+		new_res_add_func()
 		modal_func()
 	}
 

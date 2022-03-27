@@ -23,7 +23,6 @@ const { HOST_URL } = publicRuntimeConfig
 function Room({ room_info }) {
   const router = useRouter()
   const { room_name = [], room_id } = router.query;
-  const [modalState, setmodalState] = useState(false)
   const [UserType, setUserType] = useState('')
 
   useEffect(() => {
@@ -53,17 +52,6 @@ function Room({ room_info }) {
   }
 
 
-
-
-  const openModal = (e) => {
-    if (modalState) {
-      setmodalState(false)
-    } else {
-      setmodalState(true)
-    }
-  }
-
-
   const room_body = (
     <UserTypeContext.Provider value={[UserType, UpdateUserType]}>
       <div className={styles.main_div}>
@@ -75,7 +63,7 @@ function Room({ room_info }) {
         </Head>
         <RoomHeader room_info={room_info} room_context={room_name[1]} />
         <div className={styles.body_flex_wrapper}>
-          {room_name[1] == 'resources' && <Resources_Comp openModal={openModal} room_id={room_id} />}
+          {room_name[1] == 'resources' && <Resources_Comp room_id={room_id} />}
           {room_name[1] == 'qna' && <Qna_Comp />}
           {room_name[1] == 'voices' && <Voices_Comp />}
           <nav className={styles.nav_panel}>
@@ -101,12 +89,6 @@ function Room({ room_info }) {
           </nav>
         </div>
 
-        <Modal isOpen={modalState} contentLabel="Post modal" onRequestClose={openModal}
-          className={styles.RCModalStyles}
-          overlayClassName={styles.RCModalOverlayStyles}
-        >
-          <ResourceCreationComp room_id={room_info._id} resource_cont_mode="write" modal_func={openModal}/>
-        </Modal>
 
       </div>
     </UserTypeContext.Provider>
@@ -140,6 +122,7 @@ function Resources_Comp(props) {
 
   const [resourceState, setresourceState] = useState([])
   const [UserType, UpdateUserType] = useContext(UserTypeContext)
+  const [modalState, setmodalState] = useState(false)
   useEffect(() => {
     async function fetchData() {
       const response = await axios.get(`${HOST_URL}/api/getRoomResources?room_id=${props.room_id}`)
@@ -178,6 +161,15 @@ function Resources_Comp(props) {
     
   }
 
+
+  const openModal = (e) => {
+    if (modalState) {
+      setmodalState(false)
+    } else {
+      setmodalState(true)
+    }
+  }
+
   const ResourcesItemsArr = resourceState.map(ele => {
     console.log("🚀 ~ file: [...room_name].js ~ line 119 ~ Resources_Comp ~ ele", ele)
 
@@ -193,7 +185,10 @@ function Resources_Comp(props) {
   })
 
 
+
+
   const Resources_Comp_jsx = (
+    <>
     <div className={styles.rooms_activities_wrapper}>
 
       <div className={styles.recent_activites_header_wrapper}>
@@ -217,7 +212,7 @@ function Resources_Comp(props) {
         <p>rooms joined</p>
         <div className={styles.rooms_container}>
           {UserType == 'NM' ? "join the room to post resources" : <div className={styles.create_resource_div}>
-            <button onClick={props.openModal}>create resource</button>
+            <button onClick={openModal}>create resource</button>
           </div>}
           {/* <div className={styles.room_box}>
           </div>
@@ -231,6 +226,14 @@ function Resources_Comp(props) {
         </div>
       </div>
     </div>
+
+    <Modal isOpen={modalState} contentLabel="Post modal" onRequestClose={openModal}
+          className={styles.RCModalStyles}
+          overlayClassName={styles.RCModalOverlayStyles}
+        >
+          <ResourceCreationComp room_id={props.room_id} resource_cont_mode="write" modal_func={openModal} new_res_add_func={onNewResourceAdded}/>
+    </Modal>
+    </>
   )
   return Resources_Comp_jsx
 }
