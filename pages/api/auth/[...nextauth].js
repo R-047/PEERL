@@ -15,8 +15,8 @@ export default NextAuth({
 
   providers: [
 	EmailProvider({
-	  server: process.env.EMAIL_SERVER,
-	  from: process.env.EMAIL_FROM,
+	  server: "smtp://peerlp2plearning@gmail.com:peerl@123@smtp.gmail.com:587",
+	  from: "peerl@gmail.com",
 	  
 	}),
 
