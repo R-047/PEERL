@@ -143,7 +143,7 @@ function RoomHeader({room_info, room_context}) {
             </RoomContextHeading>
           </RoomContextWrapper>
           
-          <SearchComp />
+          <SearchComp mode="resource" room_id={room_info._id}/>
 
           <BtnsWrapper>
             <RoomSettingsBtn>settings</RoomSettingsBtn>

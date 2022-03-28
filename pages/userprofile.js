@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth'
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/UserProfile.module.css'
+import styles from '../styles/userprofile.module.css'
 import {listObj} from '../lib/s3client'
 import axios from 'axios';
 import clientPromise, {ObjectId} from '../lib/mongodb'

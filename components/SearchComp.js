@@ -4,6 +4,11 @@ import searchic from '../public/HomePageContents/searchsearch_ic.svg'
 import axios from 'axios'
 import getConfig from 'next/config'
 import Link from 'next/link'
+import Image from 'next/image'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.extend(relativeTime)
 
 
 
@@ -28,18 +33,18 @@ const SearchInput = styled.input`
 
 
 const SearchResultPanel = styled.div`
-	width: 160%;
-	margin-left: -200px;
+	width: 100%;
 	height: 200px;
 	background-color: #dae3f5;
-
-	border: 2px solid black;
+	/* border: 2px solid black; */
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
-	border-top-right-radius: 10px;
-	border-top-left-radius: 10px;
+	
 	position: absolute;
 	display: ${props => props.searchPanelState ? "block" : "none"};
+	z-index: 20;
+	overflow-y: auto;
+
 
 `
 
@@ -47,7 +52,7 @@ const SearchWrapper = styled.div`
 	position: relative;
   	display: inline-block;
 	align-items: center;
-	width: 300px;
+	width: 500px;
 `
 
 
@@ -88,7 +93,7 @@ const ToggleBtnsWrapper = styled.div`
 
 
 
-function SearchComp() {
+function SearchComp({ mode, room_id }) {
 	const [searchPanelState, setsearchPanelState] = useState(false)
 	const [query, setquery] = useState("")
 	const [SearchPanelState, setSearchPanelState] = useState("rooms")
@@ -108,10 +113,9 @@ function SearchComp() {
 	}
 
 	const onFocusLost = (e) => {
-		if (!e.currentTarget.contains(e.relatedTarget)) {
-			setsearchPanelState(false)
+		if (e.currentTarget.contains(e.relatedTarget)) {
 			setquery("")
-			setSearchPanelState("rooms")
+			// setSearchPanelState("rooms")
 		}
 
 	}
@@ -129,18 +133,23 @@ function SearchComp() {
 			<SearchInputIconWrapper >
 				<SearchInput onChange={onType} value={query} placeholder="Search here"></SearchInput>
 				<SearchIcon />
-
 			</SearchInputIconWrapper>
 			<SearchResultPanel searchPanelState={searchPanelState}>
 				<ToggleBtnsWrapper>
-					<TogglesearchResultButton onClick={onRoomsResultClick}>Rooms</TogglesearchResultButton>
-					<TogglesearchResultButton onClick={onUsersResultClick}>Users</TogglesearchResultButton>
+					{mode=="general" && <TogglesearchResultButton onClick={onRoomsResultClick}>Rooms</TogglesearchResultButton>}
+					{mode=="general" && <TogglesearchResultButton onClick={onUsersResultClick}>Users</TogglesearchResultButton>}
 				</ToggleBtnsWrapper>
-				<SearchResultContainer>
-					{SearchPanelState == "rooms" && <RoomSearchResultContainer search_query={query} />}
-					{SearchPanelState == "users" && <UserSearchResultContainer search_query={query} />}
-				</SearchResultContainer>
-				search result panel
+				{mode=="general" ?
+					<SearchResultContainer>
+						{SearchPanelState == "rooms" && <RoomSearchResultContainer search_query={query} />}
+						{SearchPanelState == "users" && <UserSearchResultContainer search_query={query} />}
+					</SearchResultContainer>
+					:
+					<SearchResultContainer>
+						<ResourcesSearchContainer search_query={query} room_id={room_id}/>
+					</SearchResultContainer>
+				}
+
 			</SearchResultPanel>
 
 		</SearchWrapper>
@@ -154,12 +163,54 @@ export default SearchComp
 
 
 const SearchResultContainer = styled.div`
+overflow: hidden;
 
 `
 
-const RoomResultItem = styled.div`
+
+
+
+const RoomResultItemWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: cadetblue;
+    /* border-radius: 20px; */
+    margin-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+	
+`
+
+const RoomDp = styled.div`
+	position: relative;
+	width: 32px;
+	height: 32px;
+	border-radius: 100%;
+
 
 `
+
+const RoomName = styled.h5`
+margin: 0;
+
+`
+
+
+const TimeStamp = styled.p`
+
+`
+
+const RatingsWrapper = styled.div`
+display: flex;
+flex-direction: column;
+
+`
+
+
+
+
 
 
 
@@ -173,17 +224,45 @@ function RoomSearchResultContainer({ search_query }) {
 			if (search_query != '') {
 				const result = await axios.get(`${HOST_URL}/api/search?q=${search_query}&type=rooms`)
 				console.log(result)
+				setSearchResultArr(result.data.search_results)
 			}
 		}
 		fetchData();
 
 
+
 	}, [search_query])
+
+
+
+
+
 
 	return (
 		<div>
 			<SearchResultContainer >
-				Room search results
+
+				{SearchResultArr.map((ele, index) => {
+					return (
+						<Link href={`${HOST_URL}rooms/${ele.room_name}/resources?room_id=${ele._id}`} key={ele._id}>
+							<RoomResultItemWrapper>
+								<div style={{ display: 'flex', flexDirection: 'row', gap: "10px", justifyItems: 'flex-start', alignItems: 'flex-start', alignContent: 'flex-start' }}>
+									<RoomDp>
+										<Image src={ele.room_dp_link || '/empty_face.svg'} layout="fill"></Image>
+									</RoomDp>
+									<RoomName>{ele.room_name}</RoomName>
+								</div>
+								<RatingsWrapper>
+									<p style={{ margin: '0px' }}>{`🪂: ${ele.total_res}`}</p>
+									<p style={{ margin: '0px' }}>{`👤: ${ele.total_peers}`}</p>
+
+								</RatingsWrapper>
+								<TimeStamp>{dayjs(ele.creation_date).fromNow()}</TimeStamp>
+
+							</RoomResultItemWrapper>
+						</Link>
+					)
+				})}
 			</SearchResultContainer>
 
 		</div>
@@ -194,29 +273,139 @@ function RoomSearchResultContainer({ search_query }) {
 
 
 const UserResultItem = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: cadetblue;
+    /* border-radius: 20px; */
+    margin-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+`
+
+const UserDp = styled.div`
+	position: relative;
+	width: 32px;
+	height: 32px;
+`
+const UserName = styled.h5`
+	margin: 0px;
+
 
 `
 
-function UserSearchResultContainer({ search_query }) {
+const UserDpNameWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+`
+
+
+
+function UserSearchResultContainer({ search_query}) {
 	const [SearchResultArr, setSearchResultArr] = useState([])
 
 	useEffect(() => {
 		async function fetchData() {
 			if (search_query != '') {
 				const result = await axios.get(`${HOST_URL}/api/search?q=${search_query}&type=users`)
-				console.log(result)
+				console.log(result.data.search_results)
+				setSearchResultArr(result.data.search_results)
 			}
 		}
 		fetchData();
 
 	}, [search_query])
 	return (
-		<div>
-			<SearchResultContainer>
-				Users search results
-			</SearchResultContainer>
 
-		</div>
+
+		<SearchResultContainer>
+			Users search results
+			{SearchResultArr.map(ele => {
+				return (
+					<Link href={`${HOST_URL}/userdashboard?user_id=${ele._id}`} key={ele._id}>
+						<UserResultItem>
+							<UserDpNameWrapper>
+								<UserDp>
+									<Image src={ele.image || '/empty_face.svg'} layout="fill"></Image>
+								</UserDp>
+								<UserName>
+									{ele.name}
+								</UserName>
+							</UserDpNameWrapper>
+							<p>total resources shared: {ele.total_res_shared}</p>
+						</UserResultItem>
+					</Link>
+				)
+			})}
+
+		</SearchResultContainer>
+
+	)
+}
+
+
+
+
+
+
+const ResourceSearchResultItem = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: cadetblue;
+    /* border-radius: 20px; */
+    margin-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+`
+
+const ResourceTitle = styled.h5`
+
+`
+
+const ResourceTitlePostedByWrapper = styled.div`
+
+`
+
+
+
+
+function ResourcesSearchContainer({ search_query, room_id }) {
+	const [SearchResultArr, setSearchResultArr] = useState([])
+
+	useEffect(() => {
+		async function fetchData() {
+			if (search_query != '') {
+				const result = await axios.get(`${HOST_URL}/api/search?q=${search_query}&type=resources&room_id=${room_id}`)
+				console.log(result.data.search_results)
+				setSearchResultArr(result.data.search_results)
+			}
+		}
+		fetchData();
+
+	}, [search_query])
+	return (
+
+
+		<SearchResultContainer>
+
+			{SearchResultArr.map(ele => {
+				return (
+					<Link href={`#${ele._id}`} key={ele._id} scroll={true} replace>
+						<ResourceSearchResultItem>
+							<ResourceTitle>
+								{ele.resource_title}
+							</ResourceTitle>
+							<p>{ele.user_info[0].name}</p>
+						</ResourceSearchResultItem>
+					</Link>
+				)
+			})}
+
+		</SearchResultContainer>
+
 	)
 }
 
