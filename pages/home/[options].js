@@ -10,6 +10,7 @@ import CommonHeader from '../../components/CommonHeader';
 import axios from 'axios';
 import getConfig from 'next/config'
 import RoomBox from '../../components/RoomBox'
+import PeerGroupRoomBox from '../../components/PeerGroupRoomBox';
 
 
 
@@ -88,6 +89,43 @@ export default HomePage;
 
 function Peergroup_comp(props) {
 
+  const router = useRouter()
+
+const init_state = []
+const [peer_groups_state, setpeer_groups_state] = useState(init_state)
+
+useEffect(() => {
+  async function fetchData() {
+    const response = await axios.get(`${HOST_URL}/api/getPeerGroup`)
+    console.log(response)
+    setpeer_groups_state(response.data)
+  }
+  fetchData();
+
+}, [])
+
+
+
+const onRoomBoxClick = (id, name) => {
+  router.push({
+  pathname: `/rooms/${name}/resources`,
+  query: { room_id: id }
+  }, undefined, { shallow: true })
+  }
+
+const peer_groups_comp = peer_groups_state.map((ele) => {
+  return (
+    <PeerGroupRoomBox key={ele._id} key_id={ele.room_info._id} action={onRoomBoxClick} room_name={ele.room_info.room_name} room_owner_name={ele.room_owner_info.name} total_members={100} total_resources={100}/>
+  // <RoomBox key={ele._id} key_id={ele._id} room_name={ele.room_name} action={onRoomBoxClick} />
+  )
+  })
+
+
+ 
+
+
+
+
 const peergroup_comp_jsx = (
 <div className={styles.rooms_activities_wrapper}>
 
@@ -114,8 +152,32 @@ const peergroup_comp_jsx = (
   <div className={styles.rooms_header_wrapper}>
     <p>rooms joined</p>
     <div className={styles.rooms_container}>
+      {peer_groups_comp}
+
 
       <div className={styles.room_box}>
+        <div className={styles.room_coverimage}>
+          <Image src="/Hero/test1.png" alt="" width={1000} height={550}></Image>
+        </div>
+        <div className={styles.room_destext}>
+          <p>101 Crypto Course</p>
+          <span>Rohit EP</span>
+        </div>
+        <div className={styles.room_numbers}>
+          <div className={styles.room_numbers_g1}>
+            <i className="fa-solid fa-thumbs-up"></i>
+            &nbsp;&nbsp;
+            <span>110</span>
+          </div>
+          <div className={styles.room_numbers_g2}>
+            <i className="fa-brands fa-rocketchat"></i>
+            &nbsp;&nbsp;
+            <span>23</span>
+          </div>
+        </div>
+      </div>
+
+      {/* <div className={styles.room_box}>
         <div className={styles.room_coverimage}>
           <Image src="/Hero/test1.png" alt="" width={1000} height={550}></Image>
         </div>
@@ -139,7 +201,7 @@ const peergroup_comp_jsx = (
       <div className={styles.room_box}>
       </div>
       <div className={styles.room_box}>
-      </div>
+      </div> */}
     </div>
   </div>
 </div>

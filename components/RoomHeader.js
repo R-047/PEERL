@@ -112,18 +112,20 @@ function RoomHeader({room_info, room_context}) {
 
   const onJoinRoomClick = async (e) =>{
         UpdateUserType()
-        // const room_id = room_info._id
-        // const session = await getSession()
-        // const user_id = session.id
-        // const result = await axios.post(`${HOST_URL}/api/joinroom`, {
-        //   room_id,
-        //   user_id
-        // })
-        // if(result.status == '200'){
-        //   setjoinBtnState(false)
-        // }
-				// console.log(result)
+        const room_id = room_info._id
+        const session = await getSession()
+        const user_id = session.id
+        const result = await axios.post(`${HOST_URL}/api/joinroom`, {
+          room_id,
+          user_id
+        })
+        if(result.status == '200'){
+          setjoinBtnState(false)
+        }
+				console.log(result)
   }
+
+  console.log("roommmmmmmmmmmmminfooooooooooo", room_info)
 
   return (
     

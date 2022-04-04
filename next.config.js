@@ -1,6 +1,8 @@
 
 const webpack = require("webpack");
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+// import absoluteUrl from 'next-absolute-url'
+
 const withTM = require("next-transpile-modules")([
   // `monaco-editor` isn't published to npm correctly: it includes both CSS
   // imports and non-Node friendly syntax, so it needs to be compiled.
