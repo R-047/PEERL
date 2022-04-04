@@ -1,0 +1,9 @@
+{
+	"functions": {
+		"pages/api/codeRunner.js": {
+			"includeFiles": "stubs/**",
+			"memory": 1024,
+			"maxDuration": 10
+		}
+	}
+}
