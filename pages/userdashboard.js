@@ -18,7 +18,7 @@ display: flex;
 flex-direction: row;
 width: 100%;
 height: 100vh;
-background-color: pink;
+background-color: #E6E7EE;
 overflow: hidden;
 
 `
@@ -26,12 +26,27 @@ overflow: hidden;
 const LeftInfoWrapper = styled.div`
 width: fit-content;
 height: 100%;
+display: flex;
+justify-content: center;
+align-items: flex-start;
+flex-direction: column;
+margin-left: 18px;
+border-right: 5px solid black;
+
+`
+const Inerleftwrapper = styled.div`
+width: 80%;
+border: 1px solid black;
+height: 100%;
+height: 60%;
 
 `
 const RightBigWrapper = styled.div`
   width: 100%;
   height: 100%;
 `
+
+
 
 
 const UserDp = styled.div`
@@ -41,6 +56,7 @@ const UserDp = styled.div`
   background-color: blue;
   border-radius: 100%;
   overflow: hidden;
+  border: 3px solid black;
 
 `
 
@@ -62,19 +78,48 @@ const ResourcesSharedContainer = styled.div`
 
 
 const RoomsJoinedCountContainer = styled.div`
+display: flex;
+font-family: 'Courier New', Courier, monospace;
+font-weight: 600;
+text-transform: capitalize;
+text-align: left;
+font-size: 14px;
+margin-bottom: 5px;
 
 `
 
 const ResourcesSharedCountContainer = styled.div`
-
+display: flex;
+font-family: 'Courier New', Courier, monospace;
+font-weight: 600;
+text-transform: capitalize;
+margin-top: 20px;
+text-align: left;
+font-size: 14px;
+margin-bottom: 5px;
 `
 
 const AverageAppreciationContainer = styled.div`
-
+display: flex;
+font-family: 'Courier New', Courier, monospace;
+font-weight: 800;
+text-transform: capitalize;
+margin-top: 20px;
+text-align: left;
+font-size: 14px;
+margin-bottom: 5px;
+margin-top: 20px;
 `
 
 const RoomsCreatedCount = styled.div`
-
+display: flex;
+font-family: 'Courier New', Courier, monospace;
+font-weight: 600;
+margin-top: 20px;
+text-transform: capitalize;
+text-align: left;
+font-size: 14px;
+margin-bottom: 5px;
 `
 
 const NumbersWrapper = styled.div`
@@ -83,7 +128,13 @@ const NumbersWrapper = styled.div`
 
 
 const SubsBtn = styled.button`
-
+padding: 12px 14px 12px 14px;
+border: 1px solid grey;
+border-radius: 6px;
+background-color: black;
+color: white;
+margin-top: 20px;
+cursor: pointer;
 `
 
 
@@ -156,6 +207,7 @@ function userdashboard() {
   return (
     <MainWrapper >
       <LeftInfoWrapper>
+        <Inerleftwrapper>
         <UserDp>
           <Image src={UserInfoState.user_dp || "/empty_face.svg"} layout="fill"/>
         </UserDp>
@@ -164,28 +216,25 @@ function userdashboard() {
         </UserName>
         <NumbersWrapper>
           <RoomsJoinedCountContainer>
-            rooms joined
-            <br/>
+            Rooms Joined = 
             {UserInfoState.rooms_joined_count}
           </RoomsJoinedCountContainer>
           <ResourcesSharedCountContainer>
-            resources shared
-            <br/>
+            resources shared =
             {UserInfoState.resources_shared_count}
           </ResourcesSharedCountContainer>
           <AverageAppreciationContainer>
-            average resource appreciation
-            <br/>
+            average resource appreciation =
             {parseFloat(UserInfoState.average_appreciation).toFixed(2)}
           </AverageAppreciationContainer>
           <RoomsCreatedCount>
-            rooms created
-            <br/>
+            rooms created =
             {UserInfoState.rooms_created_count}
           </RoomsCreatedCount>
           
         </NumbersWrapper>
         <SubsBtn>subscribe</SubsBtn>
+        </Inerleftwrapper>
       </LeftInfoWrapper>
 
 
