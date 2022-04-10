@@ -27,6 +27,11 @@ const SearchInput = styled.input`
 	border: none;
 	outline: none;
 `
+const Resultconatiner = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`
 
 
 
@@ -35,10 +40,14 @@ const SearchInput = styled.input`
 const SearchResultPanel = styled.div`
 	width: 100%;
 	height: 200px;
-	background-color: #dae3f5;
+	background-color: #ebeff7;
+	margin-top: 6px;
+	border: 2px solid grey;
 	/* border: 2px solid black; */
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
 	
 	position: absolute;
 	display: ${props => props.searchPanelState ? "block" : "none"};
@@ -83,12 +92,43 @@ const SearchInputIconWrapper = styled.div`
 
 
 const TogglesearchResultButton = styled.button`
+padding: 12px 14px 12px 14px;
+  background: #efefef;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: .5rem;
+  color: #444;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .2rem;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+  transition: .2s ease-in-out;
+  box-shadow: -6px -6px 14px rgba(255, 255, 255, .7),
+              -6px -6px 10px rgba(255, 255, 255, .5),
+              6px 6px 8px rgba(255, 255, 255, .075),
+              6px 6px 10px rgba(0, 0, 0, .15);
+  &:hover{
+  box-shadow: -2px -2px 6px rgba(255, 255, 255, .6),
+              -2px -2px 4px rgba(255, 255, 255, .4),
+              2px 2px 2px rgba(255, 255, 255, .05),
+              2px 2px 4px rgba(0, 0, 0, .1);
+        }
+  &:active{
+  box-shadow: inset -2px -2px 6px rgba(255, 255, 255, .7),
+              inset -2px -2px 4px rgba(255, 255, 255, .5),
+              inset 2px 2px 2px rgba(255, 255, 255, .075),
+              inset 2px 2px 4px rgba(0, 0, 0, .15);
 
+  }
 `
 
 const ToggleBtnsWrapper = styled.div`
  display: flex;
  flex-direction: row;
+ justify-content: space-evenly;
 `
 
 
@@ -172,14 +212,60 @@ overflow: hidden;
 
 const RoomResultItemWrapper = styled.div`
     display: flex;
+	margin-left: 10px;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    background: cadetblue;
+    background: #ebeff7;
     /* border-radius: 20px; */
     margin-bottom: 10px;
     padding-left: 10px;
     padding-right: 10px;
+	width: 95%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: #dde1e7;
+    /* border-radius: 20px; */
+    margin-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+	background: #eaecef;
+	border: 1px solid grey;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  border: none;
+  border-radius: .5rem;
+  color: #444;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .2rem;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+  transition: .2s ease-in-out;
+  box-shadow: -6px -6px 14px rgba(255, 255, 255, .7),
+              -6px -6px 10px rgba(255, 255, 255, .5),
+              6px 6px 8px rgba(255, 255, 255, .075),
+              6px 6px 10px rgba(0, 0, 0, .15);
+  &:hover{
+  box-shadow: -2px -2px 6px rgba(255, 255, 255, .6),
+              -2px -2px 4px rgba(255, 255, 255, .4),
+              2px 2px 2px rgba(255, 255, 255, .05),
+              2px 2px 4px rgba(0, 0, 0, .1);
+        }
+  &:active{
+  box-shadow: inset -2px -2px 6px rgba(255, 255, 255, .7),
+              inset -2px -2px 4px rgba(255, 255, 255, .5),
+              inset 2px 2px 2px rgba(255, 255, 255, .075),
+              inset 2px 2px 4px rgba(0, 0, 0, .15);
+
+  }
+
+
 	
 `
 
@@ -246,7 +332,7 @@ function RoomSearchResultContainer({ search_query }) {
 					return (
 						<Link href={`${HOST_URL}rooms/${ele.room_name}/resources?room_id=${ele._id}`} key={ele._id}>
 							<RoomResultItemWrapper>
-								<div style={{ display: 'flex', flexDirection: 'row', gap: "10px", justifyItems: 'flex-start', alignItems: 'flex-start', alignContent: 'flex-start' }}>
+								<div style={{ display: 'flex', flexDirection: 'row', gap: "10px", justifyItems: 'flex-start', alignItems: 'center', alignContent: 'flex-start' }}>
 									<RoomDp>
 										<Image src={ele.room_dp_link || '/empty_face.svg'} layout="fill"></Image>
 									</RoomDp>
@@ -273,23 +359,62 @@ function RoomSearchResultContainer({ search_query }) {
 
 
 const UserResultItem = styled.div`
+	width: 95%;
+	padding-top: 10px;
+	padding-bottom: 10px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background: cadetblue;
+    background: #dde1e7;
     /* border-radius: 20px; */
     margin-bottom: 10px;
     padding-left: 10px;
     padding-right: 10px;
+	background: #eaecef;
+	border: 1px solid grey;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  border: none;
+  border-radius: .5rem;
+  color: #444;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .2rem;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+  transition: .2s ease-in-out;
+  box-shadow: -6px -6px 14px rgba(255, 255, 255, .7),
+              -6px -6px 10px rgba(255, 255, 255, .5),
+              6px 6px 8px rgba(255, 255, 255, .075),
+              6px 6px 10px rgba(0, 0, 0, .15);
+  &:hover{
+  box-shadow: -2px -2px 6px rgba(255, 255, 255, .6),
+              -2px -2px 4px rgba(255, 255, 255, .4),
+              2px 2px 2px rgba(255, 255, 255, .05),
+              2px 2px 4px rgba(0, 0, 0, .1);
+        }
+  &:active{
+  box-shadow: inset -2px -2px 6px rgba(255, 255, 255, .7),
+              inset -2px -2px 4px rgba(255, 255, 255, .5),
+              inset 2px 2px 2px rgba(255, 255, 255, .075),
+              inset 2px 2px 4px rgba(0, 0, 0, .15);
+
+  }
 `
 
 const UserDp = styled.div`
 	position: relative;
 	width: 32px;
 	height: 32px;
+	border-radius: 40%;
 `
 const UserName = styled.h5`
+	display: flex;
+	align-items: center;
+	margin-left: 2px;
+	font-size: 10px;
 	margin: 0px;
 
 
@@ -298,6 +423,13 @@ const UserName = styled.h5`
 const UserDpNameWrapper = styled.div`
 	display: flex;
 	flex-direction: row;
+`
+const Usersearchheading = styled.div`
+	font-size: 18px;
+	font-weight: 600;
+	margin-top: 20px;
+	text-align: center;
+	margin-bottom: 20px;
 `
 
 
@@ -320,10 +452,11 @@ function UserSearchResultContainer({ search_query}) {
 
 
 		<SearchResultContainer>
-			Users search results
+			<Usersearchheading>Users search results</Usersearchheading> 
 			{SearchResultArr.map(ele => {
 				return (
 					<Link href={`${HOST_URL}/userdashboard?user_id=${ele._id}`} key={ele._id}>
+						<Resultconatiner>
 						<UserResultItem>
 							<UserDpNameWrapper>
 								<UserDp>
@@ -335,6 +468,7 @@ function UserSearchResultContainer({ search_query}) {
 							</UserDpNameWrapper>
 							<p>total resources shared: {ele.total_res_shared}</p>
 						</UserResultItem>
+						</Resultconatiner>
 					</Link>
 				)
 			})}
@@ -354,11 +488,42 @@ const ResourceSearchResultItem = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background: cadetblue;
+    background: #ebeff7;
     /* border-radius: 20px; */
     margin-bottom: 10px;
     padding-left: 10px;
     padding-right: 10px;
+
+  background: #efefef;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: .5rem;
+  color: #444;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .2rem;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+  transition: .2s ease-in-out;
+  box-shadow: -6px -6px 14px rgba(255, 255, 255, .7),
+              -6px -6px 10px rgba(255, 255, 255, .5),
+              6px 6px 8px rgba(255, 255, 255, .075),
+              6px 6px 10px rgba(0, 0, 0, .15);
+  &:hover{
+  box-shadow: -2px -2px 6px rgba(255, 255, 255, .6),
+              -2px -2px 4px rgba(255, 255, 255, .4),
+              2px 2px 2px rgba(255, 255, 255, .05),
+              2px 2px 4px rgba(0, 0, 0, .1);
+        }
+  &:active{
+  box-shadow: inset -2px -2px 6px rgba(255, 255, 255, .7),
+              inset -2px -2px 4px rgba(255, 255, 255, .5),
+              inset 2px 2px 2px rgba(255, 255, 255, .075),
+              inset 2px 2px 4px rgba(0, 0, 0, .15);
+
+  }
 `
 
 const ResourceTitle = styled.h5`
