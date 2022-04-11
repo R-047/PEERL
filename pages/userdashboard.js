@@ -379,7 +379,7 @@ function RoomsHolder(props) {
 const ResourcesItemsWrappper = styled.div`
   width: 100%;
   height: 100%;
-  background-color: green;
+  background-color: #f7f7f7;
   overflow-y: auto;
 
 `
