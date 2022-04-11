@@ -37,6 +37,7 @@ const StyledHeader = styled.header`
     padding-top: 10px;
     padding-bottom: 10px;
     border-bottom: 1px solid rgb(58, 56, 56);
+    background-color: #E6E7EE;
  
 `
 
@@ -49,6 +50,8 @@ const RoomLogoWrapper = styled.div`
 `
 
 const RoomName = styled.div`
+margin-left: 10px;
+text-transform: capitalize;
   
 `
 
@@ -57,15 +60,40 @@ const  RoomContextHeading = styled.h5`
 `
 
 const RoomSettingsBtn = styled.button`
+    padding: 10px;
+    width: 100px;
+    background-color: black;
+    margin-right: 20px;
+    color: white;
+    border-radius: 11px;
+    border: 1px solid grey;
+    cursor: pointer;
+    text-transform: capitalize;
 
 `
 
 const RoomInfoBtn = styled.button`
-
+    padding: 10px;
+    width: 100px;
+    background-color: black;
+    margin-right: 20px;
+    color: white;
+    border-radius: 11px;
+    border: 1px solid grey;
+    cursor: pointer;
+    text-transform: capitalize;
 `
 
 const RoomNotificationBtn = styled.button`
-
+    padding: 10px;
+    width: 100px;
+    background-color: black;
+    margin-right: 20px;
+    color: white;
+    border-radius: 11px;
+    border: 1px solid grey;
+    cursor: pointer;
+    text-transform: capitalize;
 `
 
 const SearchInput = styled.input`

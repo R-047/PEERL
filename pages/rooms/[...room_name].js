@@ -212,7 +212,7 @@ function Resources_Comp(props) {
         <p>rooms joined</p>
         <div className={styles.rooms_container}>
           {UserType == 'NM' ? "join the room to post resources" : <div className={styles.create_resource_div}>
-            <button onClick={openModal}>create resource</button>
+            <button onClick={openModal} className={styles.Createresourcesbutton}>Create Resource</button>
           </div>}
           {/* <div className={styles.room_box}>
           </div>

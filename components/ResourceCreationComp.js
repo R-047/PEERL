@@ -18,16 +18,33 @@ const WidgetContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    background-color: yellow;
+    background-color: rgba(228, 232, 240, 0.945);
     height: 100%;
     padding: 100px;
+	justify-content: space-around;
+
+`
+const WidgetItem = styled.div`
+    font-weight: 500;
+	height: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+	text-transform: capitalize;
+	background-color: rgba(207, 217, 235, 0.945);
+	cursor: pointer;
+	width: 80%;
+	width: 100%;
+    padding: 0px 40px;
+	margin-top: 10px;
 
 `
 
 const ContentContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	background-color: green;
+	background-color: #dde1e7;
 	width: 100%;
 	height: 100%;
 	overflow-y: auto;
@@ -45,6 +62,33 @@ const HeaderWrapper = styled.div`
 	display: flex;
 	flex-direction: row;
 	width: 100%;
+	justify-content: space-between;
+`
+const Resourcetitle = styled.input`
+ width: 60%;
+ height: 50%;
+    padding: 10px;
+    border-radius: 11px;
+    border: 1px solid grey;
+`
+const Resourcedes = styled.input`
+ width: 90%;
+ height: 50%;
+    padding: 10px;
+    border-radius: 11px;
+    border: 1px solid grey;
+	margin-left: 20px;
+`
+const ResourceSubmit = styled.button`
+    background-color: black;
+    color: white;
+    border-radius: 11px;
+	font-weight: 700;
+    border: 1px solid grey;
+    cursor: pointer;
+    text-transform: capitalize;
+	height: 55%;
+	width: 25%;
 `
 
 
@@ -303,13 +347,13 @@ function ResourceCreationComp({ room_id, resource_obj, resource_cont_mode, updat
 
 			<HeaderWrapper>
 
-				{(resource_cont_mode == "write" || resource_cont_mode == "update") ? <input type="text" value={ResourceMetaData.resource_title} onChange={onHeadingChanged} placeholder="title"></input> : undefined}
-				{(resource_cont_mode == "write" || resource_cont_mode == "update") ? <input type="text" value={ResourceMetaData.resource_description} onChange={onDescriptionChanged} placeholder="description"></input> : <div>
+				{(resource_cont_mode == "write" || resource_cont_mode == "update") ? <Resourcetitle type="text" value={ResourceMetaData.resource_title} onChange={onHeadingChanged} placeholder="title"></Resourcetitle> : undefined}
+				{(resource_cont_mode == "write" || resource_cont_mode == "update") ? <Resourcedes type="text" value={ResourceMetaData.resource_description} onChange={onDescriptionChanged} placeholder="description"></Resourcedes> : <div>
 					description
 					<p style={{"margin": '0px 0px 10px 0px'}}>{ResourceMetaData.resource_description}</p>
 				</div>}
 				{(resource_cont_mode == "write" || resource_cont_mode == "update") ? <TagsComponent mode="write" tagsArrUpdate={onTagsUpdate} tags={ResourceMetaData.tags} /> : undefined}
-				{resource_cont_mode == "write" && <button onClick={onSubmit}>submit</button>}
+				{resource_cont_mode == "write" && <ResourceSubmit onClick={onSubmit}>submit</ResourceSubmit>}
 				{resource_cont_mode == "update" && <button onClick={onUpdate}>update</button>}
 			</HeaderWrapper>
 			<WidgetContentWrapper mode={resource_cont_mode}>
@@ -317,12 +361,12 @@ function ResourceCreationComp({ room_id, resource_obj, resource_cont_mode, updat
 				{
 					(resource_cont_mode == "write" || resource_cont_mode == "update") &&
 					<WidgetContainer>
-						<div onClick={onLinkWidgetClick} >link</div>
-						<div onClick={onTextWidgetClick}>text</div>
-						<div onClick={onImageWidgetClick}>image</div>
-						<div onClick={onFileWidgetClick}>file</div>
-						<div onClick={onCodeWidgetClick}>code</div>
-						<div onClick={onVideoWidgetClick}>video</div>
+						<WidgetItem onClick={onLinkWidgetClick} >link</WidgetItem>
+						<WidgetItem onClick={onTextWidgetClick}>text</WidgetItem>
+						<WidgetItem onClick={onImageWidgetClick}>image</WidgetItem>
+						<WidgetItem onClick={onFileWidgetClick}>file</WidgetItem>
+						<WidgetItem onClick={onCodeWidgetClick}>code</WidgetItem>
+						<WidgetItem onClick={onVideoWidgetClick}>video</WidgetItem>
 					</WidgetContainer>
 				}
 
