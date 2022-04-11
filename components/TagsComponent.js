@@ -11,6 +11,7 @@ const TagsContainer = styled.div`
 	flex-wrap: wrap;
 	overflow-x: auto;
 	gap: 10px;
+	background: grey;
 
 
 	

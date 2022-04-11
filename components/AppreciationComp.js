@@ -1,8 +1,9 @@
 import axios from 'axios'
-import React,{useState, useEffect} from 'react'
+import React,{useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import getConfig from 'next/config'
 import { getSession } from 'next-auth/react'
+import { UserTypeContext } from '../contexts/UserTypeContext'
 
 const LikeBtn = styled.button`
  background-color: ${props => props.color ? "green" : "red"};
@@ -13,6 +14,7 @@ const LikesCount = styled.p`
 `
 
 function AppreciationComp({appreciation_count, resource_id, appreciated, update_func}) {
+	const [UserType, UpdateUserType] = useContext(UserTypeContext)
         console.log("🚀 ~ file: AppreciationComp.js ~ line 16 ~ AppreciationComp ~ appreciated", appreciated)
 	// const [likeToggleState, setlikeToggleState] = useState(appreciated)
 	const { publicRuntimeConfig } = getConfig()
@@ -36,15 +38,16 @@ function AppreciationComp({appreciation_count, resource_id, appreciated, update_
 	
 		console.log("resource liked state: ",appreciated)
 	}
-  return (
-    <div>
+
+	
+  return UserType == 'NM' ? null : (<div>
 	    <LikeBtn onClick={onLikeBtnClick} color={appreciated}>appreciate</LikeBtn>
 	    <LikesCount >
 		    {appreciation_count}
 	    </LikesCount>
-	</div>
+	</div>)
     
-  )
+  
 }
 
 export default AppreciationComp

@@ -237,6 +237,7 @@ function userdashboard() {
   const [UserInfoState, setUserInfoState] = useState({})
   const [RoomsCreatedState, setRoomsCreatedState] = useState([])
   const [ResourcesSharedState, setResourcesSharedState] = useState([])
+  const [subsBtnState, setsubsBtnState] = useState("")
   const router = useRouter()
   const user_id = router.query.user_id
   console.log("logging query", user_id)
@@ -248,7 +249,9 @@ function userdashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get(`${HOST_URL}api/getUserInfo?option=basic&user_id=${user_id}`)
+      const session = await getSession()
+	    const logged_in_user_id = session.id
+      const result = await axios.get(`${HOST_URL}api/getUserInfo?option=basic&user_id=${user_id}&logged_in_user_id=${logged_in_user_id}`)
       console.log(result)
       const response_data = result.data.result
       setUserInfoState({
@@ -260,19 +263,49 @@ function userdashboard() {
         resources_shared_count: response_data.resources_shared_count,
         average_appreciation: response_data.average_appreciation_count
       })
-      console.log("rooms created by user", response_data.user_created_rooms)
       setRoomsCreatedState(response_data.user_created_rooms)
       setResourcesSharedState(response_data.resources_shared)
+      console.log("logged in and user id", logged_in_user_id, user_id)
+      if(response_data.subscribed){
+        setsubsBtnState("subscribed")
+      }else{
+        
+        if(logged_in_user_id == user_id){
+          setsubsBtnState("hidden")
+        }else{
+          setsubsBtnState("unsubscribed")
+        }
+      }
     }
     if(user_id){
       fetchData()
     }
     
     
+    
   }, [user_id])
 
 
 
+const subscribe_user = async (e) => {
+  const session = await getSession()
+	const logged_in_user_id = session.id
+  const response = await axios.post(`${HOST_URL}/api/subscribe_user`, {subscriber_id: logged_in_user_id , user_id: user_id})
+  console.log(response)
+  if(response.data.message == 'success'){
+    setsubsBtnState("subscribed")
+  }
+}
+
+const unsubscribe_user = async (e) =>{
+  const session = await getSession()
+	const logged_in_user_id = session.id
+  const response = await axios.delete(`${HOST_URL}/api/unsubscribe_user?user_id=${user_id}&logged_in_user_id=${logged_in_user_id}`)
+  console.log(response)
+  if(response.data.message == 'success'){
+    setsubsBtnState("unsubscribed")
+  }
+}
   
   
 
@@ -306,7 +339,7 @@ function userdashboard() {
           </RoomsCreatedCount>
           
         </NumbersWrapper>
-        <SubsBtn>subscribe</SubsBtn>
+        {subsBtnState == "subscribed" ? <SubsBtn onClick={unsubscribe_user}>unsubscribe</SubsBtn>: subsBtnState == "unsubscribed" ? <SubsBtn onClick={subscribe_user}>subscribe</SubsBtn> : null}
         </Inerleftwrapper>
       </LeftInfoWrapper>
 

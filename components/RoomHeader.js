@@ -135,7 +135,7 @@ function RoomHeader({room_info, room_context}) {
 
   const [UserType, UpdateUserType] = useContext(UserTypeContext)
   console.log("🚀 ~ file: RoomHeader.js ~ line 109 ~ RoomHeader ~ UserType", UserType)
-  // const [joinBtnState, setjoinBtnState] = useState(true)
+  const [joinBtnState, setjoinBtnState] = useState(true)
   
 
   const onJoinRoomClick = async (e) =>{
