@@ -5,6 +5,7 @@ import room from './rooms/[...room_name]'
 import { Router, useRouter } from 'next/router'
 import styled from 'styled-components'
 import Image from 'next/image'
+import TagsComponent from '../components/TagsComponent'
 
 
 const StyledForm = styled.form`
@@ -26,7 +27,7 @@ const StyledForm = styled.form`
  
 `
 
-const FormParent = styled.form`
+const FormParent = styled.div`
  display: flex;
  flex-direction: column;
  align-items: center;
@@ -100,7 +101,6 @@ const RoomSubmitButton = styled.button`
     text-transform: capitalize;
 
 
-
 `
 
 
@@ -118,6 +118,8 @@ function createroom() {
     room_Status: false,
     room_image: "./empty_face.svg",
     room_dp: "./empty_face.svg",
+    tags: []
+
 
   }
   const [form_State, setFormState] = useState(init_state)
@@ -187,6 +189,7 @@ function createroom() {
     formData.append("room_name", form_State.room_name)
     formData.append("room_desc", form_State.room_desc)
     formData.append("room_status", form_State.room_Status)
+    formData.append("tags_arr", JSON.stringify(form_State.tags))
 
     // formData.append("room_image", undefined)
     // formData.append("room_dp", undefined)
@@ -201,7 +204,7 @@ function createroom() {
 
 
 
-    console.log(formData.get("room_name"), formData.get("room_desc"), formData.get("room_status"))
+    console.log("logging form data", form_State)
     const response = await axios.post(`${HOST_URL}/api/createroom`, formData)
     //get room_id and room_name
     const room_id = response.data.data.room_id;
@@ -216,11 +219,20 @@ function createroom() {
 
   }
 
+  const onTagsUpdate = (tags_arr) => {
+		setFormState((prev_value) => {
+			return {
+				...prev_value,
+				tags: tags_arr
+			}
+		})
+	}
+
 
   const form_ele = (
     <MainWrapper>
     <StyledForm>
-      <FormParent>
+      
       <Image src="/peerllogo.svg" alt="" width={1000} height={550}></Image>
         <RoomLabel>Room Name</RoomLabel>
         <RoomName type='text' onChange={onRoomNameChange} value={form_State.room_name} placeholder="Enter Room Name"></RoomName>
@@ -238,11 +250,13 @@ function createroom() {
         <RoomLabel>Room Image</RoomLabel>
         <Roommarginleft type='file' onChange={onRoomsPictureChange}></Roommarginleft>
         </Roomdp>
+        <TagsComponent mode="write" tagsArrUpdate={onTagsUpdate} tags={form_State.tags} />
         <RoomSubmitButton type='submit' onClick={onSubmitClick}>create room</RoomSubmitButton>
+        
         <div>
           <a href="#">Forgot password?</a> or <a href="#">Sign up</a>
         </div>
-      </FormParent>
+      
     </StyledForm>
     </MainWrapper>
 

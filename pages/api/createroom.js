@@ -11,9 +11,14 @@ apiRoute.use(upload.fields([{
       }]));
 
 apiRoute.post(async (req, res) => {
+
+	console.log("hitting the route")
+	console.log(req.body)
 	
 	const session = await getSession({ req })
 	const id = session.id
+
+	console.log("hitting the route2")
 
 	
 	const room_image = Object.keys(req.files).length ? req.files.room_image[0] : undefined
@@ -32,7 +37,7 @@ apiRoute.post(async (req, res) => {
 	tags_arr: JSON.parse(req.body.tags_arr)
 	}
 	
-
+	console.log("hitting the route3")
 
 	if(room_image){
 		const result = await put(process.env.AWS_S3_DP_BUCKET_NAME, room_image.filename, room_image)
@@ -44,6 +49,8 @@ apiRoute.post(async (req, res) => {
 		const result = await put(process.env.AWS_S3_DP_BUCKET_NAME, room_dp.filename, room_dp)
 		room.room_dp_link = `${process.env.HOST_URL}api/getBlob/d/${result.key}`	
 	}
+
+	console.log("room", room)
 
 	const new_room_info = await createRoom(room)
 	res.json({ message: 'success', data: new_room_info });

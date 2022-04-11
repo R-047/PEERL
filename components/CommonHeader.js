@@ -23,7 +23,8 @@ function CommonHeader() {
 	async function fetchData() {
 		const user_info = await getSession()
 	  	setuserinfo({
-		  ...user_info.user
+		  ...user_info.user,
+		  image: user_info.user.image || "/empty_face.svg"
 	  })
 	}
 	fetchData();	

@@ -257,6 +257,26 @@
 
 
 
+.RCModalStyles{
+	width: 25%;
+	height: fit-content;
+	overflow: hidden;
+	background: white;
+    	padding: 20px;
+	    display: flex;
+	    flex-direction: column;
+}
+
+.RCModalOverlayStyles{
+	position: fixed;
+  inset: 0px;
+  background-color: rgba(8, 8, 8, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 
 
 
