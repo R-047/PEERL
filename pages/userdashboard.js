@@ -36,7 +36,6 @@ border-right: 5px solid black;
 `
 const Inerleftwrapper = styled.div`
 width: 80%;
-border: 1px solid black;
 height: 100%;
 height: 60%;
 
@@ -71,7 +70,75 @@ const CreatedRoomsContainer = styled.div`
 const ResourcesSharedContainer = styled.div`
 
 `
+const CreatedRoomsBtn = styled.button`
+padding: 12px 14px 12px 14px;
+  background: #efefef;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: .5rem;
+  color: #444;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .2rem;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+  transition: .2s ease-in-out;
+  box-shadow: -6px -6px 14px rgba(255, 255, 255, .7),
+              -6px -6px 10px rgba(255, 255, 255, .5),
+              6px 6px 8px rgba(255, 255, 255, .075),
+              6px 6px 10px rgba(0, 0, 0, .15);
+  &:hover{
+  box-shadow: -2px -2px 6px rgba(255, 255, 255, .6),
+              -2px -2px 4px rgba(255, 255, 255, .4),
+              2px 2px 2px rgba(255, 255, 255, .05),
+              2px 2px 4px rgba(0, 0, 0, .1);
+        }
+  &:active{
+  box-shadow: inset -2px -2px 6px rgba(255, 255, 255, .7),
+              inset -2px -2px 4px rgba(255, 255, 255, .5),
+              inset 2px 2px 2px rgba(255, 255, 255, .075),
+              inset 2px 2px 4px rgba(0, 0, 0, .15);
 
+  }
+`
+
+
+
+const ResourcesSharedBtn = styled.button`
+padding: 12px 14px 12px 14px;
+  background: #efefef;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: .5rem;
+  color: #444;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .2rem;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+  transition: .2s ease-in-out;
+  box-shadow: -6px -6px 14px rgba(255, 255, 255, .7),
+              -6px -6px 10px rgba(255, 255, 255, .5),
+              6px 6px 8px rgba(255, 255, 255, .075),
+              6px 6px 10px rgba(0, 0, 0, .15);
+  &:hover{
+  box-shadow: -2px -2px 6px rgba(255, 255, 255, .6),
+              -2px -2px 4px rgba(255, 255, 255, .4),
+              2px 2px 2px rgba(255, 255, 255, .05),
+              2px 2px 4px rgba(0, 0, 0, .1);
+        }
+  &:active{
+  box-shadow: inset -2px -2px 6px rgba(255, 255, 255, .7),
+              inset -2px -2px 4px rgba(255, 255, 255, .5),
+              inset 2px 2px 2px rgba(255, 255, 255, .075),
+              inset 2px 2px 4px rgba(0, 0, 0, .15);
+
+  }
+`
 
 
 
@@ -140,16 +207,22 @@ cursor: pointer;
 
 
 const NavHeader = styled.div`
+display: flex;
+justify-content: space-around;
+background-color: white;
 
 `
-
-const CreatedRoomsBtn = styled.button`
-
+const Logoutbtn = styled.div`
+padding: 12px 14px 12px 14px;
+border: 1px solid grey;
+border-radius: 6px;
+background-color: black;
+color: white;
+margin-top: 10px;
+margin-bottom: 10px;
+cursor: pointer;
 `
 
-const ResourcesSharedBtn = styled.button`
-
-`
 
 
 
@@ -275,8 +348,9 @@ const unsubscribe_user = async (e) =>{
 
       <RightBigWrapper>
         <NavHeader>
-          <CreatedRoomsBtn onClick={(e) => setNavBtnState('rooms')}>rooms</CreatedRoomsBtn>
-          <ResourcesSharedBtn onClick={(e) => setNavBtnState('resources')}>resources</ResourcesSharedBtn>
+          <CreatedRoomsBtn onClick={(e) => setNavBtnState('rooms')}>Rooms</CreatedRoomsBtn>
+          <ResourcesSharedBtn onClick={(e) => setNavBtnState('resources')}>Resources</ResourcesSharedBtn>
+          <Logoutbtn>LogOut</Logoutbtn>
         </NavHeader>
         {NavBtnState == 'rooms' ? <RoomsHolder rooms_arr = {RoomsCreatedState}/> : <ResourcesHolder resources_arr = {ResourcesSharedState}/>}
       </RightBigWrapper>
@@ -298,7 +372,7 @@ export default userdashboard
 const RoomsItemsWrapper = styled.div`
  width: 100%;
  height: 100%;
- background-color: blue;
+ background-color: #e0e0e0;
  overflow-y: auto;
 `
 
@@ -338,7 +412,7 @@ function RoomsHolder(props) {
 const ResourcesItemsWrappper = styled.div`
   width: 100%;
   height: 100%;
-  background-color: green;
+  background-color: #f7f7f7;
   overflow-y: auto;
 
 `

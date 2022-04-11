@@ -254,7 +254,6 @@ function createroom() {
         <RoomSubmitButton type='submit' onClick={onSubmitClick}>create room</RoomSubmitButton>
         
         <div>
-          <a href="#">Forgot password?</a> or <a href="#">Sign up</a>
         </div>
       
     </StyledForm>

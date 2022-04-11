@@ -18,27 +18,68 @@ const { HOST_URL } = publicRuntimeConfig
 
 const ItemWrapper = styled.div`
 display: flex;
+margin-left: 80px;
 flex-direction: row;
-width: 100%;
+width: 80%;
 height: fit-content;
+justify-content: space-between;
 padding: 10px;
-border: 1px solid black;
+border: 1px solid grey;
+
+
+padding: 12px 14px 12px 14px;
+  background: #efefef;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: .5rem;
+  color: #444;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .2rem;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+  margin-top: 60px;
+  transition: .2s ease-in-out;
+  box-shadow: -6px -6px 14px rgba(255, 255, 255, .7),
+              -6px -6px 10px rgba(255, 255, 255, .5),
+              6px 6px 8px rgba(255, 255, 255, .075),
+              6px 6px 10px rgba(0, 0, 0, .15);
+  &:hover{
+  box-shadow: -2px -2px 6px rgba(255, 255, 255, .6),
+              -2px -2px 4px rgba(255, 255, 255, .4),
+              2px 2px 2px rgba(255, 255, 255, .05),
+              2px 2px 4px rgba(0, 0, 0, .1);
+        }
+  &:active{
+  box-shadow: inset -2px -2px 6px rgba(255, 255, 255, .7),
+              inset -2px -2px 4px rgba(255, 255, 255, .5),
+              inset 2px 2px 2px rgba(255, 255, 255, .075),
+              inset 2px 2px 4px rgba(0, 0, 0, .15);
+
+  }
 
 `
 const ResourceTitle = styled.h2`
-
+	font-size: 18px;
+	text-transform: capitalize;
 `
 
 const RoomName = styled.div`
-
+	font-size: 16px;
+	text-transform: capitalize;
 `
 
 const Date = styled.div`
-
+font-size: 14px;
+	text-transform: capitalize;
 `
 
 const Appreciation = styled.div`
-
+	font-size: 16px;
+	text-transform: capitalize;
+	color: grey;
 `
 const LeftWrapper = styled.div`
 
