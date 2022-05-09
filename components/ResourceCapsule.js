@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import TagsComponent from "./TagsComponent";
@@ -15,7 +15,9 @@ import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import ListItemButton from '@mui/material/ListItemButton';
+import ListItemButton from "@mui/material/ListItemButton";
+import { UserTypeContext } from '../contexts/UserTypeContext'
+import {getSession} from 'next-auth/react'
 
 dayjs.extend(relativeTime);
 
@@ -64,6 +66,11 @@ const ResourceRect = styled.div`
   flex-direction: column;
 `;
 
+
+const ApproveBtn = styled.button`
+  
+`
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -83,14 +90,21 @@ function ResourceCapsule({
   resource_ratings,
   tags,
   res_id,
-}) {
+  mode
+})
+
+
+
+{
   const [userInfoState, setuserInfoState] = useState({
     user_name: "",
     user_img: "/empty_face.svg",
   });
+  const [UserType, UpdateUserType] = useContext(UserTypeContext)
   const [selected, setSelected] = useState(false);
   const [open, setOpen] = React.useState(false);
-  const [notebooks_arr, setnotebooks_arr] = useState([])
+  const [notebooks_arr, setnotebooks_arr] = useState([]);
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
 
   useEffect(() => {
     async function fetchData() {
@@ -102,14 +116,17 @@ function ResourceCapsule({
       });
     }
     async function fetchNotebooks() {
-      const result = await axios.get(`${HOST_URL}/api/getNotebooks?user_id=${user_id}`);
+      const session = await getSession()
+      const id = session.id
+      const result = await axios.get(
+        `${HOST_URL}/api/getNotebooks?user_id=${id}`
+      );
 
       console.log("user_infooooooooooooooooooooooooooooooooooo", result.data);
-      setnotebooks_arr(result.data)
+      setnotebooks_arr(result.data);
     }
     fetchData();
-    fetchNotebooks()
-
+    fetchNotebooks();
   }, []);
 
   const handleOpen = (e) => {
@@ -121,15 +138,36 @@ function ResourceCapsule({
     setOpen(false);
   };
 
-  const notebooks_items_arr = notebooks_arr.map(ele => {
-    return (
-      <ListItemButton>
-              <ListItemText primary={ele.notebook_name} />
-      </ListItemButton>
-    )
-  })
 
-  
+
+  const approveResFunc = async () => {
+    e.stopPropagation();
+    const response = await axios.post(`${HOST_URL}/api/approve_res`, { resource_id: res_id })
+    console.log(response.data)
+  }
+
+  const handleListItemClick = async (event, notebook_id) => {
+    event.stopPropagation();
+    const response = await axios.post(`${HOST_URL}/api/save_res`, { notebook_id: notebook_id, resource_id: res_id })
+    console.log(response.data)
+    if(response.data.message == 'success'){
+      setOpen(false)
+    }
+
+
+  }
+
+  const notebooks_items_arr = notebooks_arr.map((ele) => {
+    return (
+      <ListItemButton
+        key = {ele._id}
+        selected={selectedIndex === 1}
+        onClick={(event) => handleListItemClick(event, ele._id)}
+      >
+        <ListItemText primary={ele.notebook_name} />
+      </ListItemButton>
+    );
+  });
 
   return (
     <>
@@ -142,7 +180,7 @@ function ResourceCapsule({
             {userInfoState.user_name}
           </UserInfoWrapper>
           {dayjs(time).fromNow()}
-          <ToggleButton
+          {mode!="staged" && <ToggleButton
             value="check"
             selected={selected}
             onChange={(e) => {
@@ -152,11 +190,12 @@ function ResourceCapsule({
             }}
           >
             <CheckIcon />
-          </ToggleButton>
+          </ToggleButton>}
+          {(mode == "staged" && UserType == 'RA' ) && <ApproveBtn onClick={approveResFunc}>approve</ApproveBtn>}
         </ResourceCapsuleHeader>
         <ResourceRect>
           <h1>{title}</h1>
-          <p>{resource_ratings}</p>
+          {mode!="staged" && <p>{resource_ratings}</p>}
         </ResourceRect>
         <TagsComponent mode="read" tags={tags} />
       </ResourceCapsuleWrapper>
@@ -170,10 +209,7 @@ function ResourceCapsule({
           <Typography id="modal-modal-title" variant="h6" component="h2">
             select the notebook
           </Typography>
-          <List dense={true}>
-            
-            {notebooks_items_arr}
-          </List>
+          <List dense={true}>{notebooks_items_arr}</List>
         </Box>
       </Modal>
     </>

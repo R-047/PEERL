@@ -96,7 +96,7 @@ function HomePage() {
               <a className={styles.link_text}>notebooks</a>
             </div>
           </Link>
-          <Link href="/trendingrooms">
+          <Link href="/trending_rooms">
             <div className={styles.link_group}>
               <div className={styles.link_icon_trendingrooms}></div>
               <a className={styles.link_text}>trending rooms</a>
@@ -381,17 +381,19 @@ function Notebooks_comp(props) {
 
   const Notebooks_comp_arr = notebooksArr.map((ele) => {
     return (
-      <Card sx={{ width: 300, height: 300 }} key={ele._id}>
-        <CardContent>
-          <Typography variant="h5" component="div">
-            {ele.notebook_name}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {dayjs(ele.creation_date).fromNow()}
-          </Typography>
-          <Typography variant="body2">{ele.notebook_desc}</Typography>
-        </CardContent>
-      </Card>
+      <Link href={`/notebooks/${ele._id}`} key={ele._id}>
+            <Card sx={{ width: 300, height: 300 }} key={ele._id}>
+              <CardContent>
+                <Typography variant="h5" component="div">
+                  {ele.notebook_name}
+                </Typography>
+                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                  {dayjs(ele.creation_date).fromNow()}
+                </Typography>
+                <Typography variant="body2">{ele.notebook_desc}</Typography>
+              </CardContent>
+            </Card>
+      </Link>
     );
   });
 

@@ -118,8 +118,7 @@ function Room({ room_info }) {
 
 
 function Resources_Comp(props) {
-
-
+  
   const [resourceState, setresourceState] = useState([])
   const [UserType, UpdateUserType] = useContext(UserTypeContext)
   const [modalState, setmodalState] = useState(false)
