@@ -3,11 +3,12 @@
 import clientPromise, { ObjectId } from "../../lib/mongodb"
 
 export default async function handler(req, res) {
-	console.log(req.body)
+	// console.log(req.body)
 	if (req.method == 'POST') {
 		const subscribe_obj = {
 			subscriber_id: new ObjectId(req.body.subscriber_id),
-			user_id: new ObjectId(req.body.user_id)
+			user_id: new ObjectId(req.body.user_id),
+			subscription: req.body.subscription
 		}
 		await Subscribe(subscribe_obj)
 		res.status(200).json({ message: 'success' })

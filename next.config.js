@@ -75,7 +75,7 @@ module.exports = withTM({
 
 
   images: {
-    domains: [process.env.HOST_NAME, "192.168.1.103", "lh3.googleusercontent.com"],
+    domains: [process.env.HOST_NAME, "192.168.1.103", "lh3.googleusercontent.com", "localhost"],
     formats: ["image/webp"],
   },
 

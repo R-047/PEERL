@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
 import { getSession } from 'next-auth/react'
@@ -7,11 +7,13 @@ import getConfig from 'next/config'
 import axios from 'axios'
 import RoomBox from '../components/RoomBox'
 import UserSharedResourceItem from '../components/UserSharedResourceItem'
+import { swRegistered } from '../contexts/UserTypeContext'
 
 
 
   const { publicRuntimeConfig } = getConfig()
   const { HOST_URL } = publicRuntimeConfig
+  const NEW_PUBLIC_KEY = "BJthRQ5myDgc7OSXzPCMftGw-n16F7zQBEN7EUD6XxcfTTvrLGWSIG7y_JxiWtVlCFua0S8MTB5rPziBqNx1qIo"
 
 const MainWrapper = styled.div`
 display: flex;
@@ -245,6 +247,7 @@ function userdashboard() {
 
 
   const [NavBtnState , setNavBtnState]= useState('rooms')
+  const push = useContext(swRegistered);
 
 
   useEffect(() => {
@@ -276,6 +279,8 @@ function userdashboard() {
           setsubsBtnState("unsubscribed")
         }
       }
+
+      console.log(push)
     }
     if(user_id){
       fetchData()
@@ -288,13 +293,40 @@ function userdashboard() {
 
 
 const subscribe_user = async (e) => {
-  const session = await getSession()
-	const logged_in_user_id = session.id
-  const response = await axios.post(`${HOST_URL}/api/subscribe_user`, {subscriber_id: logged_in_user_id , user_id: user_id})
-  console.log(response)
-  if(response.data.message == 'success'){
-    setsubsBtnState("subscribed")
-  }
+  
+  // const subscription = await push.pushManager.subscribe({
+  //   userVisibleOnly: true,
+  //   applicationServerKey: urlBase64ToUint8Array("BJthRQ5myDgc7OSXzPCMftGw-n16F7zQBEN7EUD6XxcfTTvrLGWSIG7y_JxiWtVlCFua0S8MTB5rPziBqNx1qI1")
+  // });
+  push.pushManager.getSubscription().then(async pushSubscription => {
+    if(!pushSubscription){
+        //the user was never subscribed
+        console.log("the user was never subs")
+        subscribe(push);
+        
+    }
+    else{
+        console.log("check if user was subscribed with a different key")
+        //check if user was subscribed with a different key
+        let json = pushSubscription.toJSON();
+        let public_key = json.keys.p256dh;
+        
+        console.log(public_key);
+        
+        if(public_key != NEW_PUBLIC_KEY){
+            pushSubscription.unsubscribe().then(async successful => {
+              console.log("You've successfully unsubscribed")
+                // You've successfully unsubscribed
+                subscribe(push);
+                
+            }).catch(e => {
+              console.log("Unsubscription failed")
+                // Unsubscription failed
+            })
+        }
+    }
+});
+  
 }
 
 const unsubscribe_user = async (e) =>{
@@ -306,7 +338,43 @@ const unsubscribe_user = async (e) =>{
     setsubsBtnState("unsubscribed")
   }
 }
-  
+
+
+function subscribe(registration){
+  console.log("trying yo subscribe")
+  registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(NEW_PUBLIC_KEY)
+  })
+  .then(async pushSubscription => {
+      //successfully subscribed to push
+      console.log("successfully subscribed to push, save it to your DB")
+      //save it to your DB etc....
+      const session = await getSession()
+	    const logged_in_user_id = session.id
+      const response = await axios.post(`${HOST_URL}/api/subscribe_user`, {subscriber_id: logged_in_user_id , user_id: user_id, subscription: pushSubscription})
+        console.log(response)
+        if(response.data.message == 'success'){
+          setsubsBtnState("subscribed")
+        }
+  });
+}
+ 
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = "=".repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, "+")
+    .replace(/_/g, "/");
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
   
 
 

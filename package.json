@@ -37,7 +37,8 @@
     "react-transition-group": "^4.4.2",
     "short-uuid": "^4.2.0",
     "styled-components": "^5.3.3",
-    "unsplash-js": "^7.0.15"
+    "unsplash-js": "^7.0.15",
+    "web-push": "^3.4.5"
   },
   "devDependencies": {
     "eslint": "8.7.0",
