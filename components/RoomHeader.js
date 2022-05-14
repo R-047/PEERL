@@ -12,6 +12,10 @@ import MembersStagedResourceContainer from './MembersStagedResourceContainer'
 
 
 
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+
 
 //all users
 // room level notifications
@@ -145,13 +149,44 @@ const { HOST_URL } = publicRuntimeConfig
 Modal.setAppElement('#__next')
 
 
-function RoomHeader({room_info, room_context}) {
+function RoomHeader({room_info, room_context, router}) {
 
 
   const [UserType, UpdateUserType] = useContext(UserTypeContext)
   console.log("🚀 ~ file: RoomHeader.js ~ line 109 ~ RoomHeader ~ UserType", UserType)
   const [joinBtnState, setjoinBtnState] = useState(true)
   const [modalState, setmodalState] = useState(false)
+
+
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const leave_room = async (e) =>{
+    const session = await getSession()
+    const logged_in_user_id = session.id
+    const response = await axios.delete(`${HOST_URL}/api/leave_room?user_id=${logged_in_user_id}&room_id=${room_info._id}`)
+    console.log(response)
+    if(response.data.message == "success"){
+      router.push("/home/peergroups") 
+    }
+    
+  }
+
+  const del_room = async (e) => {
+    const response = await axios.delete(`${HOST_URL}/api/delete_room?room_id=${room_info._id}`)
+    console.log(response)
+    if(response.data.message == "success"){
+      router.push("/home/rooms") 
+    }
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   
   
   
@@ -203,13 +238,39 @@ function RoomHeader({room_info, room_context}) {
           
           <SearchComp mode="resource" room_id={room_info._id}/>
 
+          
           <BtnsWrapper>
-            <RoomSettingsBtn>settings</RoomSettingsBtn>
+            {UserType != 'NM' && <Button
+            id="basic-button"
+            aria-controls={open ? 'basic-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={handleClick}
+          >
+            settings
+          </Button>}
             <RoomInfoBtn>about</RoomInfoBtn>
             <RoomNotificationBtn>notifications</RoomNotificationBtn>
             
             {UserType == 'RA' ? <ResourceStageButton onClick={openModal}>staged resources</ResourceStageButton> : UserType == 'RM' ? <ResourceStageButton onClick={openModal}>your staged resources</ResourceStageButton> : null}
           </BtnsWrapper>
+
+
+
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
+          >
+            {UserType == 'RM' ? <MenuItem onClick={leave_room}>leave room</MenuItem> : <MenuItem onClick={del_room}>delete room</MenuItem> }
+            
+            {/* <MenuItem onClick={handleClose}>My account</MenuItem>
+            <MenuItem onClick={handleClose}>Logout</MenuItem> */}
+          </Menu>
 
           {UserType == 'NM' && <JoinBtn onClick={onJoinRoomClick}>join this room</JoinBtn>}
 
