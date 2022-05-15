@@ -8,6 +8,12 @@ import Image from 'next/image'
 import TagsComponent from '../components/TagsComponent'
 
 
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
+
 const StyledForm = styled.form`
  display: flex;
 
@@ -116,6 +122,7 @@ function createroom() {
     room_name: "",
     room_desc: "",
     room_Status: false,
+    category: "",
     room_image: "./empty_face.svg",
     room_dp: "./empty_face.svg",
     tags: []
@@ -123,6 +130,16 @@ function createroom() {
 
   }
   const [form_State, setFormState] = useState(init_state)
+
+
+  const handleChange = (event) => {
+    setFormState((prev_state) => {
+      return {
+        ...prev_state,
+        category: event.target.value
+      }
+    })
+  };
 
   const onRoomNameChange = (e) => {
     setFormState((prev_state) => {
@@ -189,6 +206,7 @@ function createroom() {
     formData.append("room_name", form_State.room_name)
     formData.append("room_desc", form_State.room_desc)
     formData.append("room_status", form_State.room_Status)
+    formData.append("room_category", form_State.category)
     formData.append("tags_arr", JSON.stringify(form_State.tags))
 
     // formData.append("room_image", undefined)
@@ -242,6 +260,21 @@ function createroom() {
         <RoomLabel>room status</RoomLabel>
         <input type='checkbox' onChange={onRoomStatusChange} checked={form_State.room_Status}></input>
         </Activeparent>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Category</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={form_State.category}
+            label="Category"
+            onChange={handleChange}
+          >
+            <MenuItem value={"Technology"}>Technology</MenuItem>
+            <MenuItem value={"Bussiness"}>Bussiness</MenuItem>
+            <MenuItem value={"Finance"}>Finance</MenuItem>
+            <MenuItem value={"Science"}>Science</MenuItem>
+          </Select>
+        </FormControl>
         <Roomdp>
         <RoomLabel>Room Icon</RoomLabel>
         <Roommarginleft type='file' onChange={onRoomsDpChange}></Roommarginleft>

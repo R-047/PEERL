@@ -15,6 +15,20 @@ import { getSession } from 'next-auth/react'
 import { UserTypeContext } from '../../contexts/UserTypeContext'
 
 
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+
+
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Typography from '@mui/material/Typography';
+
+import Paper from '@mui/material/Paper';
+
+
 Modal.setAppElement('#__next')
 const { publicRuntimeConfig } = getConfig()
 const { HOST_URL } = publicRuntimeConfig
@@ -242,32 +256,111 @@ function Resources_Comp(props) {
 
 function Qna_Comp(props) {
   const router = useRouter()
-  const onCreateClick = (e) => {
-    router.push("/createroom")
+  const [value, setValue] = useState('');
+  const [answer_value, setanswer_value] = useState('')
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
+
+  const handleChangeAnswer = (event) => {
+    setanswer_value(event.target.value);
   }
+
   const Qna_Comp_jsx = (
     <div className={styles.rooms_activities_wrapper}>
-
-      <div className={styles.recent_activites_header_wrapper}>
-        <p>recent activities</p>
-        <div className={styles.activities_container}>
-
-          <div className={styles.activity_rect}>
-          </div>
-          <div className={styles.activity_rect}>
-          </div>
-          <div className={styles.activity_rect}>
-          </div>
-          <div className={styles.activity_rect}>
-          </div>
-          <div className={styles.activity_rect}>
-          </div>
-        </div>
-      </div>
-
       <div className={styles.rooms_header_wrapper}>
         <p>rooms created</p>
         <div className={styles.rooms_container}>
+          <Box
+            component="form"
+            sx={{
+              width: '75%',
+              marginTop: '20px',
+              marginBottom: '30px'
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              id="outlined-multiline-flexible"
+              label="post a question"
+              multiline
+              sx={{
+                width: '100%',
+                marginBottom: '10px'
+              }}
+              maxRows={4}
+              value={value}
+              onChange={handleChange}
+            />
+             <Button variant="contained">Post your question</Button>
+          </Box>
+
+
+
+              {/* loop this with questions */}
+          <Accordion
+            sx={{
+              width: '75%',
+            }}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+              
+            >
+              <Typography>How is it done ??</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+            <Box
+                sx={{
+                  width: '100%',
+                  marginTop: '20px',
+                  marginBottom: '30px'
+                }}
+              >
+                <TextField
+                  id="outlined-multiline-flexible2"
+                  label="answer"
+                  multiline
+                  sx={{
+                    width: '100%',
+                    marginBottom: '10px'
+                  }}
+                  maxRows={4}
+                  value={answer_value}
+                  onChange={handleChangeAnswer}
+                />
+                <Button variant="contained">Post your answer</Button>
+              </Box>
+              {/* loop this around answers for that question */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  '& > :not(style)': {
+                    m: 1,
+                    width: '100%',
+                    height: 'fit-content',
+                    padding: '20px',
+                    flexDirection: 'column'
+                  },
+                }}
+              >
+                <Paper elevation={3}> 
+                just like that
+                <Typography variant="caption" display="block" sx={{
+                  marginTop: '10px'
+                }}>
+                  answered by alby 0on 2022-01-01
+                </Typography>
+                </Paper>
+                
+              </Box>
+            </AccordionDetails>
+          </Accordion>
 
           <div className={styles.room_box}>
           </div>

@@ -31,6 +31,7 @@ apiRoute.post(async (req, res) => {
 	room_name: req.body.room_name,
 	room_desc: req.body.room_desc,
 	room_status: req.body.room_status,
+	room_category: req.body.category,
 	creation_date: new Date(Date.now()),
 	room_image_link: undefined,
 	room_dp_link: undefined,
