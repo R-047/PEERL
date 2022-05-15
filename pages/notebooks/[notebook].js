@@ -1,12 +1,41 @@
-import React from 'react'
+import React, {useState} from 'react'
 import clientPromise, { ObjectId } from '../../lib/mongodb'
+import ResourceCapsule from '../../components/ResourceCapsule';
+import ResourceCreationComp from '../../components/ResourceCreationComp';
+import Collapsible from 'react-collapsible';
+import styles from '../../styles/Room.module.css'
+import { UserTypeContext } from '../../contexts/UserTypeContext';
 
 function Notebook({db_response}) {
-    console.log(db_response)
+    console.log("response,..........................",db_response)
+    const [UserType, setUserType] = useState('NM')
+
+
+    const ResourcesItemsArr = db_response.map(ele => {
+      console.log("🚀 ~ file: [...room_name].js ~ line 119 ~ Resources_Comp ~ ele", ele)
+    
+      const tigger_ele = (
+        <ResourceCapsule user_id={ele.resource_info[0].user_id} time={ele.resource_info[0].creation_date} title={ele.resource_info[0].resource_title} resource_ratings={ele.resource_info[0].appreciation_count} tags={ele.resource_info[0].tags} res_id={ele.resource_info[0]._id} />
+      )
+      return (
+        <Collapsible className={styles.collapsible_container} openedClassName={styles.collapsible_container} key={ele._id} trigger={tigger_ele}>
+          <ResourceCreationComp resource_obj={ele.resource_info[0]} resource_cont_mode="read" />
+        </Collapsible>
+    
+      )
+    })
+    
+
   return (
-    <div>Notebook</div>
+    <UserTypeContext.Provider value={[UserType, setUserType]}>
+      <div>{ResourcesItemsArr}</div>
+    </UserTypeContext.Provider>
+    
   )
 }
+
+
+
 
 
 
@@ -19,6 +48,8 @@ export async function getServerSideProps(context) {
   
     console.log("🚀 ~ file: [...room_name].js ~ line 185 ~ getServerSideProps ~ db_response", db_response)
   
+
+
   
     return {
       props: {

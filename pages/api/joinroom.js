@@ -19,6 +19,11 @@ export default async function handler(req, res) {
 
 const insertJoinDetails = async (room_user_obj) => {
 	const client = await clientPromise
-	const result = await client.db().collection("room_users").insertOne(room_user_obj)
+	const result = await client.db().collection("room_users").update(room_user_obj, 
+		{
+		 $setOnInsert: room_user_obj
+		},
+		{upsert: true}
+   )
 	return result
 }

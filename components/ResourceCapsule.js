@@ -180,7 +180,7 @@ function ResourceCapsule({
             {userInfoState.user_name}
           </UserInfoWrapper>
           {dayjs(time).fromNow()}
-          {mode!="staged" && <ToggleButton
+          {mode!="staged" && UserType!="NM" ? <ToggleButton
             value="check"
             selected={selected}
             onChange={(e) => {
@@ -190,7 +190,7 @@ function ResourceCapsule({
             }}
           >
             <CheckIcon />
-          </ToggleButton>}
+          </ToggleButton> : null}
           {(mode == "staged" && UserType == 'RA' ) && <ApproveBtn onClick={approveResFunc}>approve</ApproveBtn>}
         </ResourceCapsuleHeader>
         <ResourceRect>
