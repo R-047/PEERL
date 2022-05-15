@@ -205,7 +205,7 @@ function Resources_Comp(props) {
     <div className={styles.rooms_activities_wrapper}>
 
       <div className={styles.recent_activites_header_wrapper}>
-        <p>recent activities</p>
+        <p></p>
         <div className={styles.activities_container}>
 
           <div className={styles.activity_rect}>

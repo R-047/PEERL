@@ -2,8 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 
 const StyledRoomBox = styled.div`
-	border: 5px solid black;
+	border: 5px solid #949494;
     width: 300px;
+	margin-left: 20px;
     border-radius: 20px;
     margin-top: 10px;
     margin-bottom: 10px;

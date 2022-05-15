@@ -253,12 +253,12 @@ function createroom() {
       
       <Image src="/peerllogo.svg" alt="" width={1000} height={550}></Image>
         <RoomLabel>Room Name</RoomLabel>
-        <RoomName type='text' onChange={onRoomNameChange} value={form_State.room_name} placeholder="Enter Room Name"></RoomName>
+        <RoomName type='text' onChange={onRoomNameChange} value={form_State.room_name} placeholder="Enter Room Name" required></RoomName>
         <RoomLabel>Room Description</RoomLabel>
         <RoomDes value={form_State.room_desc} onChange={onRoomDescChange} placeholder="Enter Room description"></RoomDes>
         <Activeparent>
         <RoomLabel>room status</RoomLabel>
-        <input type='checkbox' onChange={onRoomStatusChange} checked={form_State.room_Status}></input>
+        <input type='checkbox' onChange={onRoomStatusChange} checked={form_State.room_Status} required></input>
         </Activeparent>
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Category</InputLabel>
@@ -277,11 +277,11 @@ function createroom() {
         </FormControl>
         <Roomdp>
         <RoomLabel>Room Icon</RoomLabel>
-        <Roommarginleft type='file' onChange={onRoomsDpChange}></Roommarginleft>
+        <Roommarginleft type='file' onChange={onRoomsDpChange} required></Roommarginleft>
         </Roomdp>
         <Roomdp>
         <RoomLabel>Room Image</RoomLabel>
-        <Roommarginleft type='file' onChange={onRoomsPictureChange}></Roommarginleft>
+        <Roommarginleft type='file' onChange={onRoomsPictureChange} required></Roommarginleft>
         </Roomdp>
         <TagsComponent mode="write" tagsArrUpdate={onTagsUpdate} tags={form_State.tags} />
         <RoomSubmitButton type='submit' onClick={onSubmitClick}>create room</RoomSubmitButton>

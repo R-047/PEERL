@@ -156,12 +156,12 @@ function Peergroup_comp(props) {
   const peergroup_comp_jsx = (
     <div className={styles.rooms_activities_wrapper}>
       <div className={styles.recent_activites_header_wrapper}>
-        <p>recent activities</p>
+        <p></p>
         <div className={styles.activities_container}>
           <div className={styles.activity_rect}>
-            <p>jason shared a new resource in OnTheBlocks </p>
+            <p></p>
             <span>
-              <p>3 Hrs Ago</p>
+              <p></p>
             </span>
           </div>
           <div className={styles.activity_rect}></div>
@@ -278,11 +278,11 @@ function Rooms_comp(props) {
   const rooms_comp_jsx = (
     <div className={styles.rooms_activities_wrapper}>
       <div className={styles.recent_activites_header_wrapper}>
-        <p className={styles.recent_activites_header_text}>recent activities</p>
+        <p className={styles.recent_activites_header_text}></p>
         <div className={styles.activities_container}>
           <div className={styles.activity_rect}>
-            <p>jason shared a new resource in OnTheBlocks </p>
-            <span>3 Hrs Ago</span>
+            <p></p>
+            <span></span>
           </div>
           <div className={styles.activity_rect}></div>
           <div className={styles.activity_rect}></div>

@@ -64,8 +64,8 @@ function Index() {
 					</Link>
 
 				</nav>
-				<Link href={`/?signup=${true}`} as={`/signup`}>
-					<a className={styles.signup_btn}>sign up</a>
+				<Link href='/api/auth/signin'>
+					<a className={styles.signup_btn}>Join Us</a>
 				</Link>
 
 			</div>
