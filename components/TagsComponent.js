@@ -11,7 +11,11 @@ const TagsContainer = styled.div`
 	flex-wrap: wrap;
 	overflow-x: auto;
 	gap: 10px;
-	background: grey;
+	margin-bottom: 10px;
+	border-radius: 20%;
+	background: rgba(207,217,235,0.945);
+	margin-right: 5px;
+	margin-left: 5px;
 
 
 	
