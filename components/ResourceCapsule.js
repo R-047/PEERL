@@ -140,7 +140,7 @@ function ResourceCapsule({
 
 
 
-  const approveResFunc = async () => {
+  const approveResFunc = async (e) => {
     e.stopPropagation();
     const response = await axios.post(`${HOST_URL}/api/approve_res`, { resource_id: res_id })
     console.log(response.data)

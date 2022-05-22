@@ -249,8 +249,8 @@ function RoomHeader({room_info, room_context, router}) {
           >
             settings
           </Button>}
-            <RoomInfoBtn>about</RoomInfoBtn>
-            <RoomNotificationBtn>notifications</RoomNotificationBtn>
+            {/* <RoomInfoBtn>about</RoomInfoBtn>
+            <RoomNotificationBtn>notifications</RoomNotificationBtn> */}
             
             {UserType == 'RA' ? <ResourceStageButton onClick={openModal}>staged resources</ResourceStageButton> : UserType == 'RM' ? <ResourceStageButton onClick={openModal}>your staged resources</ResourceStageButton> : null}
           </BtnsWrapper>
@@ -300,7 +300,7 @@ function RoomHeader({room_info, room_context, router}) {
             }
           }}
           >
-            <h1>this is a modal</h1>
+            <h1>staged resources</h1>
             {UserType == 'RA' && <StagedResourcesContainer room_id={room_info._id}></StagedResourcesContainer>}
             {UserType == 'RM' && <MembersStagedResourceContainer room_id={room_info._id}></MembersStagedResourceContainer>}
 

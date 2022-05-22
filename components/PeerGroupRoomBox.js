@@ -80,7 +80,7 @@ function PeerGroupRoomBox({img, room_name, room_owner_name, total_members, total
           <span>{room_owner_name}</span>
         </RoomTxt>
         <RoomNumbers>
-          <div>
+          {/* <div>
             <i className="fa-solid fa-thumbs-up"></i>
             &nbsp;&nbsp;
             <span>{total_members}</span>
@@ -89,7 +89,7 @@ function PeerGroupRoomBox({img, room_name, room_owner_name, total_members, total
             <i className="fa-brands fa-rocketchat"></i>
             &nbsp;&nbsp;
             <span>{total_resources}</span>
-          </div>
+          </div> */}
         </RoomNumbers>
       </RoomBox> 
   )

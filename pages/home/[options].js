@@ -96,12 +96,12 @@ function HomePage() {
               <a className={styles.link_text}>notebooks</a>
             </div>
           </Link>
-          <Link href="/trending_rooms">
+          {/* <Link href="/trending_rooms">
             <div className={styles.link_group}>
               <div className={styles.link_icon_trendingrooms}></div>
               <a className={styles.link_text}>trending rooms</a>
             </div>
-          </Link>
+          </Link> */}
         </nav>
       </div>
     </div>
@@ -157,7 +157,7 @@ function Peergroup_comp(props) {
     <div className={styles.rooms_activities_wrapper}>
       <div className={styles.recent_activites_header_wrapper}>
         <p></p>
-        <div className={styles.activities_container}>
+        {/* <div className={styles.activities_container}>
           <div className={styles.activity_rect}>
             <p></p>
             <span>
@@ -168,7 +168,7 @@ function Peergroup_comp(props) {
           <div className={styles.activity_rect}></div>
           <div className={styles.activity_rect}></div>
           <div className={styles.activity_rect}></div>
-        </div>
+        </div> */}
       </div>
 
       <div className={styles.rooms_header_wrapper}>
@@ -176,7 +176,7 @@ function Peergroup_comp(props) {
         <div className={styles.rooms_container}>
           {peer_groups_comp}
 
-          <div className={styles.room_box}>
+          {/* <div className={styles.room_box}>
             <div className={styles.room_coverimage}>
               <Image
                 src="/Hero/test1.png"
@@ -201,7 +201,7 @@ function Peergroup_comp(props) {
                 <span>23</span>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* <div className={styles.room_box}>
         <div className={styles.room_coverimage}>
@@ -266,6 +266,7 @@ function Rooms_comp(props) {
         key={ele._id}
         key_id={ele._id}
         room_name={ele.room_name}
+        room_image_link={ele.room_image_link}
         action={onRoomBoxClick}
       />
     );
@@ -280,14 +281,14 @@ function Rooms_comp(props) {
       <div className={styles.recent_activites_header_wrapper}>
         <p className={styles.recent_activites_header_text}></p>
         <div className={styles.activities_container}>
-          <div className={styles.activity_rect}>
+          {/* <div className={styles.activity_rect}>
             <p></p>
             <span></span>
-          </div>
+          </div> */}
+          {/* <div className={styles.activity_rect}></div>
           <div className={styles.activity_rect}></div>
           <div className={styles.activity_rect}></div>
-          <div className={styles.activity_rect}></div>
-          <div className={styles.activity_rect}></div>
+          <div className={styles.activity_rect}></div> */}
         </div>
       </div>
 

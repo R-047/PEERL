@@ -87,18 +87,18 @@ function Room({ room_info }) {
                 <a className={styles.link_text}>resources</a>
               </div>
             </Link>
-            <Link href={`${room_name[0]}/qna?room_id=${room_id}`} replace>
+            {/* <Link href={`${room_name[0]}/qna?room_id=${room_id}`} replace>
               <div className={styles.link_group}>
                 <div className={styles.link_icon_rooms}></div>
                 <a className={styles.link_text}>Q n A</a>
               </div>
-            </Link>
-            <Link href={`${room_name[0]}/voices?room_id=${room_id}`} replace>
+            </Link> */}
+            {/* <Link href={`${room_name[0]}/voices?room_id=${room_id}`} replace>
               <div className={styles.link_group}>
                 <div className={styles.link_icon_subscriptions}></div>
                 <a className={styles.link_text}>voices</a>
               </div>
-            </Link>
+            </Link> */}
 
           </nav>
         </div>
@@ -204,7 +204,7 @@ function Resources_Comp(props) {
     <>
     <div className={styles.rooms_activities_wrapper}>
 
-      <div className={styles.recent_activites_header_wrapper}>
+      {/* <div className={styles.recent_activites_header_wrapper}>
         <p></p>
         <div className={styles.activities_container}>
 
@@ -219,7 +219,7 @@ function Resources_Comp(props) {
           <div className={styles.activity_rect}>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className={styles.rooms_header_wrapper}>
         <p>rooms joined</p>
@@ -258,6 +258,8 @@ function Qna_Comp(props) {
   const router = useRouter()
   const [value, setValue] = useState('');
   const [answer_value, setanswer_value] = useState('')
+  const [questions_arr, setQuestionsArr] = useState([])
+  const [answers_arr, setAnswersArr] = useState([])
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -265,6 +267,23 @@ function Qna_Comp(props) {
 
   const handleChangeAnswer = (event) => {
     setanswer_value(event.target.value);
+  }
+
+
+  const fetchQuestions = async () => {
+    const result = await axios.get(`${HOST_URL}/api/getQuestions?room_id=${props.room_id}`)
+    setQuestionsArr(result.data.questions)
+  }
+
+  const fetchAnswers = async () => {
+    const result = await axios.get(`${HOST_URL}/api/getAnswers?question_id=${props.question_id}`)
+    setAnswersArr(result.data.answers)
+  }
+
+  const postQuestion = async () => {
+    const result = await axios.post(`${HOST_URL}/api/postQuestion`, {
+      room_id: props.room_id
+    })
   }
 
   const Qna_Comp_jsx = (
@@ -362,12 +381,6 @@ function Qna_Comp(props) {
             </AccordionDetails>
           </Accordion>
 
-          <div className={styles.room_box}>
-          </div>
-          <div className={styles.room_box}>
-          </div>
-          <div className={styles.room_box}>
-          </div>
         </div>
       </div>
     </div>
